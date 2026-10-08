@@ -1,0 +1,731 @@
+/* =========================================================================
+   DISEÑO MEJORADO PARA EL MODAL DE LOGIN (ALTO CONTRASTE)
+   ========================================================================= */
+
+/* 1. Fondo del modal con degradado sutil y bordes más vivos */
+#authModal .modal-content {
+    background: linear-gradient(145deg, #16181b, #1e2125) !important;
+    border: 1px solid rgba(255, 51, 51, 0.45) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), 0 0 15px rgba(255, 51, 51, 0.15) !important;
+}
+
+/* 2. Pestañas de navegación superiores */
+#authTabs {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+#authTabs .nav-link {
+    color: #9ba4b0 !important;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    transition: all 0.25s ease;
+}
+
+#authTabs .nav-link.active {
+    color: #ff3333 !important;
+    background-color: transparent !important;
+    border-bottom: 3px solid #ff3333 !important;
+    text-shadow: 0 0 8px rgba(255, 51, 51, 0.4);
+}
+
+#authTabs .nav-link:hover:not(.active) {
+    color: #ffffff !important;
+}
+
+/* 3. Etiquetas de los campos (Inputs) */
+#authModal .form-label {
+    color: #f8f9fa !important;
+    font-size: 0.8rem;
+    letter-spacing: 0.8px;
+}
+
+/* 4. Inputs y Placeholders */
+#authModal .form-control {
+    background-color: #0b0c0e !important;
+    color: #ffffff !important;
+    border: 1px solid #495057 !important;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+}
+
+#authModal .form-control::placeholder {
+    color: #727b86 !important;
+    opacity: 1;
+}
+
+#authModal .form-control:focus {
+    border-color: #ff3333 !important;
+    box-shadow: 0 0 10px rgba(255, 51, 51, 0.35) !important;
+}
+
+/* 5. Texto de ayuda */
+#authModal .text-danger {
+    color: #ff4d4d !important;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+#authModal .text-danger:hover {
+    color: #ff8080 !important;
+}
+
+#authModal .form-check-label {
+    color: #cbd5e1 !important;
+    font-weight: 400;
+}
+
+/* 6. Botón principal */
+#authModal .btn-premium-red {
+    background-color: #e62222 !important;
+    border-color: #e62222 !important;
+    color: #ffffff !important;
+    transition: all 0.2s ease-in-out;
+}
+
+#authModal .btn-premium-red:hover {
+    background-color: #ff3333 !important;
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.5) !important;
+    transform: translateY(-1px);
+}
+
+/* =========================================================================
+   DROPDOWN DE SUGERENCIAS DE BÚSQUEDA (AUTOCOMPLETE)
+   ========================================================================= */
+#searchSuggestions {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: linear-gradient(145deg, #16181b, #1e2125);
+    border: 1px solid rgba(255, 51, 51, 0.35);
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    z-index: 1055;
+    max-height: 360px;
+    overflow-y: auto;
+    padding: 6px;
+}
+
+.search-suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.search-suggestion-item:hover,
+.search-suggestion-item:focus {
+    background-color: rgba(255, 51, 51, 0.12);
+}
+
+.search-suggestion-item + .search-suggestion-item {
+    margin-top: 2px;
+}
+
+.search-suggestion-thumb {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    background-color: #0b0c0e;
+    border: 1px dashed #495057;
+}
+
+.search-suggestion-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.search-suggestion-name {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-suggestion-desc {
+    color: #9ba4b0;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-suggestion-price {
+    color: #ff3333;
+    font-weight: 700;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.search-suggestion-empty {
+    color: #727b86;
+    font-size: 0.85rem;
+    padding: 10px;
+    text-align: center;
+}
+
+/* =========================================================================
+   VARIABLES Y ESTILOS GENERALES
+   ========================================================================= */
+:root {
+    --bg-dark-premium: #121212;
+    --bg-card-dark: #1a1a1a;
+    --accent-red: #dc3545;
+    --accent-red-hover: #b02a37;
+}
+
+body {
+    background-color: #0d0d0d;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar-premium {
+    background-color: #121212 !important;
+    border-bottom: 2px solid #222;
+}
+
+.btn-premium-red {
+    background-color: var(--accent-red);
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-premium-red:hover {
+    background-color: var(--accent-red-hover);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(220, 53, 69, 0.4);
+}
+
+.btn-premium-outline {
+    border: 1px solid #444;
+    color: #ccc;
+    transition: all 0.3s ease;
+}
+
+.btn-premium-outline:hover {
+    border-color: var(--accent-red);
+    color: #fff;
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.card-premium {
+    background-color: var(--bg-card-dark);
+    border: 1px solid #262626;
+    border-radius: 8px;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.card-premium:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-red);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-item-custom {
+    min-height: 320px;
+    background: linear-gradient(135deg, #151515 0%, #252525 100%);
+    border: 1px solid #333;
+}
+
+.badge-premium-red {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: var(--accent-red);
+    border: 1px solid rgba(220, 53, 69, 0.4);
+}
+
+.form-control-premium {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    color: #fff;
+}
+
+.form-control-premium:focus {
+    background-color: #222;
+    border-color: var(--accent-red);
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.25);
+    color: #fff;
+}
+
+.list-group-item-action.active-premium {
+    color: var(--accent-red) !important;
+    font-weight: bold;
+}
+
+/* =========================================================================
+   CARRITO DE COMPRAS (UNIFICADO)
+   ========================================================================= */
+.cart-products {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cart-product {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: 0.2s ease;
+}
+
+.cart-product:hover {
+    border-color: rgba(220, 53, 69, 0.35);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 110px 1fr 130px 140px;
+    align-items: center;
+    gap: 25px;
+    padding: 25px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.cart-item:first-child {
+    padding-top: 10px;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-product-image {
+    width: 110px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.cart-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.cart-product-image span,
+.cart-no-image {
+    font-size: 35px;
+}
+
+.cart-product-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart-product-name {
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+}
+
+.cart-product-description {
+    color: #888;
+    font-size: 0.85rem;
+    margin: 0 0 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cart-product-price {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.quantity-label,
+.subtotal-label {
+    display: block;
+    color: #777;
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+}
+
+.cart-product-quantity {
+    text-align: center;
+}
+
+.quantity-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.quantity-box button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.quantity-box button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.quantity-box span {
+    min-width: 35px;
+    text-align: center;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.cart-product-subtotal {
+    text-align: right;
+}
+
+.cart-product-subtotal strong {
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+/* Responsive Carrito */
+@media (max-width: 768px) {
+    .cart-item {
+        grid-template-columns: 80px 1fr;
+        gap: 15px;
+    }
+
+    .cart-product-image {
+        width: 80px;
+        height: 80px;
+    }
+
+    .cart-product-quantity,
+    .cart-product-subtotal {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .cart-product {
+        gap: 12px;
+    }
+
+    .cart-product-info {
+        width: calc(100% - 90px);
+    }
+
+    .cart-product-quantity {
+        margin-left: 0;
+    }
+
+    .cart-product-subtotal {
+        min-width: auto;
+    }
+}
+
+/* =========================================================================
+   PÁGINAS DE AUTENTICACIÓN (LOGIN / REGISTRO)
+   ========================================================================= */
+.auth-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(146, 1, 16, 0.562), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(220, 53, 69, 0.10), transparent 40%),
+        #0d0d0d;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-topbar {
+    padding: 1.25rem 1.5rem;
+}
+
+.auth-back-link {
+    color: #9ba4b0;
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+}
+
+.auth-back-link:hover {
+    color: #ffffff;
+}
+
+.auth-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.5rem 3rem;
+}
+
+.auth-shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+@media (min-width: 860px) {
+    .auth-shell {
+        grid-template-columns: 1fr 1.7fr; 
+        min-height: 650px;
+    }
+
+    .auth-side {
+        display: flex;
+    }
+}
+
+.auth-side {
+    position: relative;
+    background-image: 
+        linear-gradient(rgba(10, 10, 10, 0.70), rgba(10, 10, 10, 0.95)), 
+        url('../img/logo.jpg');
+    background-size: 250px 250px; 
+    background-repeat: repeat;
+    background-position: center;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.auth-side::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(13, 13, 13, 0.2), rgba(13, 13, 13, 0.9));
+    pointer-events: none;
+}
+
+.auth-side-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1.5rem;
+}
+
+.auth-form-panel {
+    position: relative;
+    z-index: 10;
+    background: linear-gradient(145deg, #16181b, #1e2125);
+    padding: 2.5rem 2rem;
+}
+
+@media (min-width: 576px) {
+    .auth-form-panel {
+        padding: 3rem 3rem;
+    }
+}
+
+/* =========================================================================
+   ESTILOS PREMIUM PARA LA PÁGINA DE PERFIL
+   ========================================================================= */
+.profile-page-wrapper {
+    min-height: 85vh;
+    padding: 3rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.profile-container {
+    width: 100%;
+    max-width: 850px;
+    background: linear-gradient(145deg, #16181b, #1e2125);
+    border: 1px solid rgba(255, 51, 51, 0.3);
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+}
+
+.profile-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.profile-title {
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+}
+
+.profile-subtitle {
+    color: #9ba4b0;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Navegación de Pestañas */
+.profile-tabs {
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 2rem;
+    overflow-x: auto;
+}
+
+.profile-tab-btn {
+    background: transparent;
+    border: none;
+    color: #9ba4b0;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.profile-tab-btn:hover {
+    color: #ffffff;
+}
+
+.profile-tab-btn.active {
+    color: #ff3333;
+    border-bottom-color: #ff3333;
+    text-shadow: 0 0 8px rgba(255, 51, 51, 0.4);
+}
+
+/* Ocultar/Mostrar Contenido de Pestañas */
+.profile-tab-content {
+    display: none;
+}
+
+.profile-tab-content.active {
+    display: block;
+}
+
+/* Layout Formulario y Grid */
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+.form-group label {
+    color: #f8f9fa;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.form-control-premium {
+    background-color: #0b0c0e !important;
+    color: #ffffff !important;
+    border: 1px solid #495057 !important;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control-premium:focus {
+    border-color: #ff3333 !important;
+    box-shadow: 0 0 10px rgba(255, 51, 51, 0.35) !important;
+    outline: none;
+}
+
+/* Acciones */
+.profile-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-save {
+    padding: 0.75rem 2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Responsivo */
+@media (max-width: 650px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+    .profile-container {
+        padding: 1.5rem;
+    }
+}
+
+/* Asistente compartido de la tienda. */
+#mv-chat { position:fixed; right:22px; bottom:22px; z-index:1040; font:14px/1.5 Arial,sans-serif; color:#f5f5f5; }
+#mv-chat * { box-sizing:border-box; }
+#mv-chat button { cursor:pointer; font:inherit; }
+#mv-chat button:focus-visible, #mv-chat input:focus-visible { outline:3px solid #ffbb70; outline-offset:2px; }
+#mv-chat .mv-chat-toggle { border:1px solid #ff6170; border-radius:28px; background:#bd2035; color:white; padding:13px 20px; font-weight:bold; box-shadow:0 6px 24px #0006; }
+#mv-chat-panel { position:absolute; right:0; bottom:62px; width:360px; max-width:calc(100vw - 28px); height:490px; max-height:calc(100dvh - 110px); display:flex; flex-direction:column; background:#191b20; border:1px solid #555; border-radius:18px; overflow:hidden; box-shadow:0 14px 48px #0008; }
+#mv-chat-panel[hidden] { display:none; }
+.mv-chat-header { display:flex; justify-content:space-between; align-items:center; padding:16px; background:#a91d30; }
+.mv-chat-header strong { font-size:17px; }
+.mv-chat-header small { display:block; color:#ffe2e6; }
+#mv-chat .mv-chat-close { background:transparent; border:0; color:white; font-size:28px; padding:0 8px; }
+.mv-chat-notice { margin:0; padding:10px 14px; font-size:11px; color:#d0d2d8; border-bottom:1px solid #393c45; }
+.mv-chat-log { flex:1; min-height:0; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:10px; }
+.mv-chat-message { margin:0; max-width:90%; padding:10px 12px; border-radius:12px; overflow-wrap:anywhere; white-space:pre-wrap; }
+.mv-chat-message.bot { align-self:flex-start; background:#30343d; }
+.mv-chat-message.usuario { align-self:flex-end; background:#a91d30; }
+.mv-chat-topics { display:flex; gap:6px; padding:6px 12px; }
+#mv-chat .mv-chat-topics button { border:1px solid #727783; border-radius:16px; padding:4px 10px; background:transparent; color:#fff; font-size:12px; }
+.mv-chat-status { min-height:20px; margin:0; padding:0 12px; color:#ffc6cc; font-size:12px; }
+.mv-chat-form { display:flex; gap:8px; padding:12px; border-top:1px solid #393c45; }
+#mv-chat-message { flex:1; width:0; min-width:0; background:#101216; border:1px solid #777; color:white; border-radius:8px; padding:10px; font:inherit; }
+#mv-chat-message::placeholder { color:#bfc3ca; }
+#mv-chat .mv-chat-form button { border:0; border-radius:8px; background:#bd2035; color:white; padding:8px 12px; }
+#mv-chat button:disabled { opacity:.55; cursor:wait; }
+.mv-chat-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+@media(max-width:480px) { #mv-chat { right:14px; bottom:14px; } }
