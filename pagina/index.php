@@ -4,7 +4,10 @@ require_once __DIR__ . '/src/config/rutas.php';
 require_once __DIR__ . '/src/config/database.php';
 require_once __DIR__ . '/src/controllers/auth/productos_controller.php';
 require_once __DIR__ . '/src/views/productos_card.php';
-$seleccion = array_slice(array_values(array_filter(obtenerTodosLosProductos(), fn($p) => !empty($p['imagenes']) && (int)$p['stock'] > 0)), 0, 12);
+require_once __DIR__ . '/src/views/random-product.php';
+$productosVisuales = productosVisualesAleatorios();
+$seleccion = array_slice($productosVisuales, 0, 12);
+$heroProduct = $productosVisuales[0] ?? null;
 $isHomePage = true;
 require_once __DIR__ . '/src/views/_layouts/header.php';
 $homeCategoryUrls = [
@@ -24,24 +27,18 @@ foreach ($categoriasNavbar as $homeCategory) {
 <main class="mvb-storefront mvb-refresh">
 <section class="mvb-new-hero" aria-labelledby="home-title"><div class="mvb-wide mvb-new-hero-grid">
 <div class="mvb-new-hero-copy">
-<p class="mvb-overline"><span></span> PARA LOS QUE CUIDAN CADA DETALLE</p>
-<h1 id="home-title">Tu auto.<br> Tu estilo.<br> <em>Tu próximo detalle.</em></h1>
-<p class="mvb-hero-description">Limpieza, accesorios y herramientas para darle a tu auto ese toque que lo hace tuyo.</p>
-<div class="mvb-hero-actions"><a class="mvb-main-action" href="<?= BASE_URL ?>/src/views/catalogo.php">Explorar el catálogo <span aria-hidden="true">↗</span></a><a class="mvb-text-action" href="#productos">Ver la selección ↓</a></div>
-<div class="mvb-hero-note"><span aria-hidden="true">●</span> Productos reales. Fotos, precios y stock a la vista.</div>
+<p class="mvb-overline"><span></span> MULTIVENTAS BARVIE</p>
+<h1 id="home-title">Equipá tu auto.<br> <em>A tu manera.</em></h1>
+<p class="mvb-hero-description">Accesorios, limpieza y herramientas.</p>
+<div class="mvb-hero-actions"><a class="mvb-main-action" href="<?= BASE_URL ?>/src/views/catalogo.php">Explorar el catálogo <span aria-hidden="true">↗</span></a><a class="mvb-text-action" href="#productos">Ver productos ↓</a></div>
+
 </div>
 <div class="mvb-new-hero-art">
-<a class="mvb-featured-product" href="<?= BASE_URL ?>/src/views/catalogo.php?buscar=ARMOR">
-<div class="mvb-featured-top"><span>EN FOCO / MVB</span><span class="mvb-featured-tag">Limpieza &amp; cuidado</span></div>
-<img src="<?= BASE_URL ?>/assets/img/limpieza-productos/arm17744/arm17744_01.png" alt="Shampoo Armor All Ultra Shine Wash and Wax" fetchpriority="high" width="400" height="400">
-<div class="mvb-featured-bottom"><div><span>ARMOR ALL</span><h2>Brillo que se nota.</h2></div><span class="mvb-round-arrow" aria-hidden="true">↗</span></div></a>
-<div class="mvb-hero-mini-grid">
-<a class="mvb-hero-mini" href="<?= BASE_URL ?>/src/views/catalogo.php?buscar=DESTORNILLADOR"><img src="<?= BASE_URL ?>/assets/img/herramientas-y-elevacion/ll-013/ll-013_01.png" alt="Juego de destornilladores" width="96" height="96"><div><span>SIEMPRE A MANO</span><strong>Equipate para más</strong></div><span aria-hidden="true">↗</span></a>
-<a class="mvb-hero-mini" href="<?= BASE_URL ?>/src/views/catalogo.php?buscar=REVIGAL"><img src="<?= BASE_URL ?>/assets/img/limpieza-productos/re551/re551_01.png" alt="Limpiador Revigal" width="96" height="96"><div><span>PONELO A PUNTO</span><strong>Cuidado del motor</strong></div><span aria-hidden="true">↗</span></a>
-</div></div></div></section>
-<div class="mvb-new-service-strip mvb-wide"><span><b>01</b> Encontrá lo que buscás</span><span><b>02</b> Consultá el stock en cada producto</span><a href="https://wa.me/5491162982496" target="_blank" rel="noopener noreferrer"><b>03</b> Te ayudamos por WhatsApp ↗</a></div>
+<?php if ($heroProduct): ?><a class="mvb-featured-product" href="<?= BASE_URL ?>/src/views/detalles_producto.php?id=<?= (int)$heroProduct['id_producto'] ?>"><div class="mvb-featured-top"><span>DESCUBRÍ MVB</span><span class="mvb-featured-tag"><?= escaparProducto($heroProduct['categoria_nombre'] ?? '') ?></span></div><img src="<?= escaparProducto($heroProduct['imagen_destacada']) ?>" alt="<?= escaparProducto($heroProduct['nombre']) ?>" fetchpriority="high" width="400" height="400"><div class="mvb-featured-bottom"><div><span><?= escaparProducto($heroProduct['marca'] ?? '') ?></span><h2><?= escaparProducto($heroProduct['nombre']) ?></h2></div><span class="mvb-round-arrow" aria-hidden="true">↗</span></div></a><?php endif; ?>
+<div class="mvb-hero-mini-grid"><?php foreach (array_slice($productosVisuales, 1, 2) as $mini): ?><a class="mvb-hero-mini" href="<?= BASE_URL ?>/src/views/detalles_producto.php?id=<?= (int)$mini['id_producto'] ?>"><img src="<?= escaparProducto($mini['imagen_destacada']) ?>" alt="<?= escaparProducto($mini['nombre']) ?>" width="96" height="96"><div><span><?= escaparProducto($mini['categoria_nombre'] ?? '') ?></span><strong><?= escaparProducto($mini['nombre']) ?></strong></div><span aria-hidden="true">↗</span></a><?php endforeach; ?></div></div></div></section>
+
 <section class="mvb-wide mvb-new-section" id="productos" aria-labelledby="selection-title">
-<div class="mvb-new-section-heading"><div><p class="mvb-overline">LA SELECCIÓN MVB</p><h2 id="selection-title">Pequeños detalles.<br> <span>Grandes cambios.</span></h2></div><div class="mvb-rail-controls"><a href="<?= BASE_URL ?>/src/views/catalogo.php">Ver todo el catálogo ↗</a><button type="button" data-product-scroll="-1" aria-label="Ver productos anteriores">←</button><button type="button" data-product-scroll="1" aria-label="Ver más productos">→</button></div></div>
+<div class="mvb-new-section-heading"><div><p class="mvb-overline">EXPLORÁ MVB</p><h2 id="selection-title">Encontrá tu próximo producto.</h2></div><div class="mvb-rail-controls"><a href="<?= BASE_URL ?>/src/views/catalogo.php">Ver todo el catálogo ↗</a><button type="button" data-product-scroll="-1" aria-label="Ver productos anteriores">←</button><button type="button" data-product-scroll="1" aria-label="Ver más productos">→</button></div></div>
 <?php if ($seleccion): ?><div class="mvb-product-rail" id="homeProductRail" tabindex="0" role="region" aria-label="Selección de productos, desplazable horizontalmente"><?php foreach ($seleccion as $p): ?><?= renderProductCard($p) ?><?php endforeach; ?></div>
 <?php else: ?><div class="mvb-empty-selection"><p>Tu próximo detalle te espera en el catálogo.</p><a href="<?= BASE_URL ?>/src/views/catalogo.php">Explorar productos ↗</a></div><?php endif; ?>
 </section>
