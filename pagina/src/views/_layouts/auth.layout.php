@@ -6,6 +6,10 @@ if (isset($_SESSION['usuario'])) {
     header('Location: ' . BASE_URL . '/index.php');
     exit;
 }
+if (!empty($isRegisterPage)) {
+    require __DIR__ . '/register.layout.php';
+    return;
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
