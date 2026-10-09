@@ -23,6 +23,8 @@ require_once __DIR__ . '/database.php';
 function guardarSesionUsuario(array $user, string $jwt): void
 {
     session_regenerate_id(true);
+    // Invalida los formularios abiertos de otra cuenta al cambiar de usuario.
+    $_SESSION['perfil_csrf'] = bin2hex(random_bytes(32));
     $nombre = $user['Nombre'] ?? $user['username'] ?? '';
     $_SESSION['usuario_id'] = $user['id'];
     $_SESSION['nombre'] = $nombre;
@@ -30,6 +32,7 @@ function guardarSesionUsuario(array $user, string $jwt): void
         'id' => $user['id'], 'id_usuario' => $user['id'],
         'name' => $nombre, 'nombre' => $nombre,
         'apellido' => $user['Apellido'] ?? '', 'email' => $user['email'],
+        'telefono' => $user['Telefono'] ?? '',
         'jwt' => $jwt,
     ];
 }

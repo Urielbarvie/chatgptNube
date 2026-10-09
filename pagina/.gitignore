@@ -26,3 +26,5 @@ Thumbs.db
 
 # Node modules
 node_modules/
+# Respaldo privado de la base transferida
+/storage/strapi-database.sql

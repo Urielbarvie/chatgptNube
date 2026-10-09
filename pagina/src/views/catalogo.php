@@ -32,13 +32,31 @@ if ($busqueda !== '') {
 }
 
 if ($busqueda === '' && $categoriaId === null) {
-    $subcategorias = obtenerCategorias(null); // categorías principales
+    $productos = obtenerTodosLosProductos();
 }
 
+$isCatalogPage = true;
 require_once __DIR__ . '/_layouts/header.php';
 ?>
     <!-- Catálogo -->
-    <main class="container my-5">
+    <main class="container my-5 mvb-catalog">
+
+        <div class="catalog-banner" aria-label="Accesorios, limpieza y herramientas">
+            <div><span>MULTIVENTAS BARVIE</span><h2>Cuidá cada detalle.</h2><p>Accesorios, limpieza y herramientas para tu vehículo.</p></div>
+            <img src="<?= BASE_URL ?>/assets/img/limpieza-productos/re551/re551_01.png" alt="Producto para limpieza vehicular" width="160" height="180">
+            <img src="<?= BASE_URL ?>/assets/img/herramientas-y-elevacion/ll-013/ll-013_01.png" alt="Juego de herramientas" width="200" height="180">
+        </div>
+        <nav class="catalog-breadcrumb" aria-label="Ubicación"><a href="<?= BASE_URL ?>/index.php">Inicio</a> / <a href="<?= BASE_URL ?>/src/views/catalogo.php">Productos</a><?php if ($categoriaActual): ?> / <?= htmlspecialchars($categoriaActual['nombre']) ?><?php endif; ?></nav>
+        <div class="catalog-layout">
+        <aside class="catalog-sidebar" aria-label="Categorías">
+            <h2>Categorías</h2>
+            <a href="<?= BASE_URL ?>/src/views/catalogo.php" <?= $categoriaId === null && $busqueda === '' ? 'aria-current="page"' : '' ?>>Todo el catálogo</a>
+            <?php foreach ($categoriasNavbar as $cat): ?>
+                <a href="<?= BASE_URL ?>/src/views/catalogo.php?categoria=<?= (int)$cat['id_categoria'] ?>" <?= $categoriaId === (int)$cat['id_categoria'] ? 'aria-current="page"' : '' ?>><?= htmlspecialchars($cat['nombre']) ?></a>
+            <?php endforeach; ?>
+            <div class="catalog-help"><strong>¿Necesitás una mano?</strong><p>Consultanos sobre el producto que buscás.</p><a href="https://wa.me/5491162982496" target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp ↗</a></div>
+        </aside>
+        <section class="catalog-results" aria-label="Resultados del catálogo">
 
         <!-- Encabezado + buscador propio del catálogo (GET) -->
         <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
@@ -51,12 +69,13 @@ require_once __DIR__ . '/_layouts/header.php';
                     <h1 class="fw-bold text-white text-uppercase tracking-wide m-0"><?= htmlspecialchars($categoriaActual['nombre']) ?></h1>
                 <?php else: ?>
                     <h1 class="fw-bold text-white text-uppercase tracking-wide m-0">Catálogo</h1>
-                    <p class="text-secondary mb-0">Elegí una categoría para ver los productos disponibles.</p>
+                    <p class="text-secondary mb-0">Explorá todos los productos o filtrá por categoría y búsqueda.</p>
                 <?php endif; ?>
             </div>
 
-            <form method="GET" action="<?= BASE_URL ?>/src/views/catalogo.php" class="d-flex gap-2">
-                <input type="text" name="buscar" value="<?= htmlspecialchars($busqueda) ?>" class="form-control form-control-premium" placeholder="Buscar en el catálogo...">
+            <form method="GET" action="<?= BASE_URL ?>/src/views/catalogo.php" class="d-flex gap-2 catalog-search">
+                <label for="catalog-search" class="visually-hidden">Buscar en el catálogo</label>
+                <input id="catalog-search" type="search" name="buscar" value="<?= htmlspecialchars($busqueda) ?>" class="form-control form-control-premium" placeholder="Buscar en el catálogo...">
                 <button type="submit" class="btn btn-premium-red px-4">Buscar</button>
             </form>
         </div>
@@ -66,12 +85,20 @@ require_once __DIR__ . '/_layouts/header.php';
             <!-- ============================================================
                  VISTA: GRILLA DE (SUB)CATEGORÍAS
                  ============================================================ -->
-            <div class="row g-4">
+            <div class="row g-4 catalog-categories">
                 <?php foreach ($subcategorias as $cat): ?>
                     <?php $cantidad = contarProductosEnCategoria($cat['id_categoria']); ?>
                     <div class="col-12 col-sm-6 col-lg-4">
                         <a href="<?= BASE_URL ?>/src/views/catalogo.php?categoria=<?= (int) $cat['id_categoria'] ?>" class="text-decoration-none">
-                            <div class="card card-premium h-100 p-4 text-center">
+                            <div class="card card-premium h-100 p-4 catalog-category">
+                                <?php
+                                $fotoCategoria = null;
+                                $nombreCategoria = strtolower($cat['nombre']);
+                                foreach (['detailing' => 'limpieza-productos/re551/re551_01.png', 'herramientas' => 'herramientas-y-elevacion/ll-013/ll-013_01.png', 'accesorios' => 'celulares-soportes-y-carga/va-119/va-119_01.png', 'seguridad' => 'sujecion-y-seguridad/te-001/te-001_01.png'] as $clave => $foto) {
+                                    if (str_contains($nombreCategoria, $clave)) { $fotoCategoria = $foto; break; }
+                                }
+                                ?>
+                                <?php if ($fotoCategoria): ?><img class="catalog-category-photo" src="<?= BASE_URL ?>/assets/img/<?= $fotoCategoria ?>" alt="" loading="lazy" width="220" height="180"><?php endif; ?>
                                 <h4 class="h5 fw-bold text-white mb-2"><?= htmlspecialchars($cat['nombre']) ?></h4>
                                 <?php if (!empty($cat['descripcion'])): ?>
                                     <p class="text-secondary small mb-3"><?= htmlspecialchars($cat['descripcion']) ?></p>
@@ -92,7 +119,8 @@ require_once __DIR__ . '/_layouts/header.php';
             <!-- ============================================================
                  VISTA: PRODUCTOS (de una categoría hoja, o de una búsqueda)
                  ============================================================ -->
-            <div class="row g-4">
+            <p class="catalog-result-count"><?= count($productos) ?> producto<?= count($productos) === 1 ? '' : 's' ?></p>
+            <div class="row g-4 catalog-product-grid">
                 <?php foreach ($productos as $p): ?>
                     <?= renderProductCard($p) ?>
                 <?php endforeach; ?>
@@ -108,6 +136,8 @@ require_once __DIR__ . '/_layouts/header.php';
 
         <?php endif; ?>
 
+        </section>
+        </div>
     </main>
 
 <?php
