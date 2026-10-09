@@ -4,6 +4,7 @@ require_once __DIR__ . '/../_layouts/auth.layout.php';
 $error = $_GET['error'] ?? null;
 ?>
 <div class="mvb-signup-heading"><p class="mvb-signup-overline">HOLA, BIENVENIDO A MVB</p><h1>Empecemos por vos.</h1><p>Una cuenta para tu auto y todo lo que viene.</p></div>
+<div class="mvb-register-invitation"><span class="mvb-invitation-mark" aria-hidden="true">↗</span><div><strong>Una cuenta que habla de vos.</strong><p>Sumá tu contacto, tu dirección y tu auto para dejar tu perfil listo.</p></div><a href="#personaliza">Personalizar mi perfil ↓</a></div>
 <p class="mvb-signup-login">¿Ya sos parte? <a href="<?= BASE_URL ?>/src/views/auth/login.php">Iniciá sesión ↗</a></p>
 <?php if ($error): ?><div class="mvb-signup-error" role="alert"><strong>No pudimos crear tu cuenta.</strong><span><?php if($error==='email'): ?>Ese correo ya está registrado. Podés iniciar sesión con él.<?php elseif($error==='password'): ?>Las contraseñas no coinciden. Revisalas e intentá de nuevo.<?php else: ?>Revisá los datos ingresados e intentá de nuevo.<?php endif; ?></span></div><?php endif; ?>
 <form action="<?= BASE_URL ?>/src/controllers/auth/register.php" method="POST" class="mvb-signup-form" id="signupForm">
@@ -19,29 +20,12 @@ $error = $_GET['error'] ?? null;
 </div>
 <p class="mvb-field-hint" id="passwordHint">Usá una contraseña de al menos 8 caracteres.</p>
 </fieldset>
-<details class="mvb-signup-extras"><summary><span class="mvb-extras-number">02</span><span><strong>Hagamos la cuenta más tuya</strong><small>Contacto, dirección y vehículo · opcional</small></span><span aria-hidden="true" class="mvb-extras-plus">+</span></summary><div class="mvb-extras-content"><p>Podés completar estos datos ahora o más adelante desde tu perfil.</p>
-    <!-- Teléfono y Frecuencia de Compra juntos -->
-    <div class="row g-2 mb-3">
-        <div class="col-6">
-            <label for="telefono" class="form-label text-secondary small text-uppercase fw-semibold">WhatsApp / Teléfono</label>
-            <input type="tel" class="form-control form-control-premium" id="telefono" name="telefono" placeholder="11 1234-5678">
-        </div>
-        <div class="col-6">
-            <label for="frecuencia_compra" class="form-label text-secondary small text-uppercase fw-semibold">Frecuencia de compra</label>
-            <select class="form-select form-control-premium" id="frecuencia_compra" name="frecuencia_compra">
-                <option value="" selected>Preferís no decir</option>
-                <option value="ocasional">De vez en cuando</option>
-                <option value="mensual">Una vez al mes</option>
-                <option value="frecuente">Frecuentemente</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Domicilio acoplado en 3 columnas (Provincia, Ciudad, Dirección) -->
-    <div class="row g-2 mb-3">
-        <div class="col-4">
-            <label for="provincia" class="form-label text-secondary small text-uppercase fw-semibold">Provincia</label>
-            <select class="form-select form-control-premium" id="provincia" name="provincia">
+<section class="mvb-profile-setup" id="personaliza" aria-labelledby="personaliza-title">
+<header class="mvb-profile-setup-heading"><div class="mvb-profile-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m5 10 2-5h10l2 5M4 10h16v8H4zM7 18v2m10-2v2M7 13h2m6 0h2M7 5h10"/></svg></div><div><p>TU PERFIL, A TU MEDIDA</p><h2 id="personaliza-title">Tu auto también es parte.</h2><span>Completá estos datos y tenelos a mano en tu cuenta.</span></div><span class="mvb-optional-badge">Opcional</span></header>
+<div class="mvb-profile-progress"><span id="profileProgressText" aria-live="polite">0 de 8 datos completados</span><span>Podés completarlos después</span><div class="mvb-profile-progress-track"><span id="profileProgressFill"></span></div></div>
+<div class="mvb-extras-content">
+<fieldset class="mvb-profile-group"><legend><span>01</span> Cómo te contactamos</legend><div class="mvb-signup-grid"><div class="mvb-signup-field"><label for="telefono">WhatsApp / Teléfono</label><input type="tel" id="telefono" name="telefono" class="form-control form-control-premium" autocomplete="tel" placeholder="11 1234-5678"></div><div class="mvb-signup-field"><label for="frecuencia_compra">Frecuencia de compra</label><select class="form-select form-control-premium" id="frecuencia_compra" name="frecuencia_compra"><option value="">Preferís no decir</option><option value="ocasional">De vez en cuando</option><option value="mensual">Una vez al mes</option><option value="frecuente">Frecuentemente</option></select></div></div></fieldset>
+<fieldset class="mvb-profile-group"><legend><span>02</span> Tu dirección</legend><p>Guardá tus datos para tenerlos disponibles en tu perfil.</p><div class="mvb-signup-field"><label for="provincia">Provincia</label><select class="form-select form-control-premium" id="provincia" name="provincia" autocomplete="address-level1">
                 <option value="" selected>Seleccionar...</option>
                 <option value="Buenos Aires">Buenos Aires</option>
                 <option value="CABA">CABA</option>
@@ -67,36 +51,9 @@ $error = $_GET['error'] ?? null;
                 <option value="Santiago del Estero">Santiago del Estero</option>
                 <option value="Tierra del Fuego">Tierra del Fuego</option>
                 <option value="Tucumán">Tucumán</option>
-            </select>
-        </div>
-        <div class="col-4">
-            <label for="ciudad" class="form-label text-secondary small text-uppercase fw-semibold">Ciudad / Localidad</label>
-            <input type="text" class="form-control form-control-premium" id="ciudad" name="ciudad" placeholder="Ej: Quilmes">
-        </div>
-        <div class="col-4">
-            <label for="direccion" class="form-label text-secondary small text-uppercase fw-semibold">Calle y Número</label>
-            <input type="text" class="form-control form-control-premium" id="direccion" name="direccion" placeholder="Ej: Av. Mitre 1234">
-        </div>
-    </div>
-
-    <!-- Vehículo acoplado -->
-    <div class="row g-2 mb-3">
-        <div class="col-5">
-            <label for="auto_marca" class="form-label text-secondary small text-uppercase fw-semibold">Marca del auto</label>
-            <input type="text" class="form-control form-control-premium" id="auto_marca" name="auto_marca" placeholder="Ej: Nissan">
-        </div>
-        <div class="col-5">
-            <label for="auto_modelo" class="form-label text-secondary small text-uppercase fw-semibold">Modelo</label>
-            <input type="text" class="form-control form-control-premium" id="auto_modelo" name="auto_modelo" placeholder="Ej: Kicks">
-        </div>
-        <div class="col-2">
-            <label for="auto_anio" class="form-label text-secondary small text-uppercase fw-semibold">Año</label>
-            <input type="number" class="form-control form-control-premium" id="auto_anio" name="auto_anio" placeholder="2020" min="1980" max="2030">
-        </div>
-    </div>
-
-
-</div></details>
+            </select></div><div class="mvb-signup-grid"><div class="mvb-signup-field"><label for="ciudad">Ciudad / Localidad</label><input type="text" class="form-control form-control-premium" id="ciudad" name="ciudad" autocomplete="address-level2" placeholder="Ej: Quilmes"></div><div class="mvb-signup-field"><label for="direccion">Calle y número</label><input type="text" class="form-control form-control-premium" id="direccion" name="direccion" autocomplete="street-address" placeholder="Ej: Av. Mitre 1234"></div></div></fieldset>
+<fieldset class="mvb-profile-group"><legend><span>03</span> Contanos sobre tu auto</legend><p>Tu vehículo también tiene su lugar en MVB.</p><div class="mvb-signup-grid"><div class="mvb-signup-field"><label for="auto_marca">Marca</label><input type="text" class="form-control form-control-premium" id="auto_marca" name="auto_marca" placeholder="Ej: Nissan"></div><div class="mvb-signup-field"><label for="auto_modelo">Modelo</label><input type="text" class="form-control form-control-premium" id="auto_modelo" name="auto_modelo" placeholder="Ej: Kicks"></div></div><div class="mvb-signup-field mvb-year-field"><label for="auto_anio">Año</label><input type="number" class="form-control form-control-premium" id="auto_anio" name="auto_anio" placeholder="2020" min="1980" max="2030"></div></fieldset>
+</div></section>
 <div class="mvb-signup-preferences"><span class="mvb-preference-title">Mantenete al día, si vos querés.</span>
     <!-- Checkboxes -->
     <div class="form-check mb-2">
@@ -119,6 +76,14 @@ $error = $_GET['error'] ?? null;
 </form>
 <script>
 (()=>{
+const profileFields = [...document.querySelectorAll('#personaliza input, #personaliza select')];
+const updateProfileProgress = () => {
+    const completed = profileFields.filter(field => field.value.trim() !== '').length;
+    document.getElementById('profileProgressText').textContent = completed + ' de ' + profileFields.length + ' datos completados';
+    document.getElementById('profileProgressFill').style.width = (completed / profileFields.length * 100) + '%';
+};
+profileFields.forEach(field => { field.addEventListener('input', updateProfileProgress); field.addEventListener('change', updateProfileProgress); });
+updateProfileProgress();
 const password=document.getElementById('clave'),confirmation=document.getElementById('repetir_clave');
 const validate=()=>confirmation.setCustomValidity(confirmation.value&&confirmation.value!==password.value?'Las contraseñas no coinciden.':'');
 password.addEventListener('input',validate);confirmation.addEventListener('input',validate);
