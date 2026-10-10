@@ -4,8 +4,8 @@ $error = $_GET['error'] ?? null;
 ?>
 
 <div class="text-center mb-3">
-    <h1 class="h4 fw-bold text-white mb-1">Crear Cuenta</h1>
-    <p class="text-secondary small mb-0">Sumate al Club de Ofertas de Multiventas Barvie</p>
+    <h1 class="h4 fw-bold text-white mb-1">Creá tu cuenta.</h1>
+    <p class="text-secondary small mb-0">Registrate y seguí comprando.</p>
 </div>
 
 <?php if ($error === 'email'): ?>
@@ -16,7 +16,7 @@ $error = $_GET['error'] ?? null;
     <div class="alert alert-danger py-2 small">Revisá los datos ingresados e intentá de nuevo.</div>
 <?php endif; ?>
 
-<form action="<?= BASE_URL ?>/src/controllers/auth/register.php" method="POST" novalidate>
+<form action="<?= BASE_URL ?>/src/controllers/auth/register.php" method="POST">
 
     <!-- ============ DATOS OBLIGATORIOS ============ -->
     <h6 class="text-danger text-uppercase small fw-bold mb-3">Datos de la cuenta</h6>
@@ -25,24 +25,24 @@ $error = $_GET['error'] ?? null;
     <div class="row g-2 mb-3">
         <div class="col-6">
             <label for="nombre" class="form-label text-secondary small text-uppercase fw-semibold">Nombre</label>
-            <input type="text" class="form-control form-control-premium" id="nombre" name="nombre" required autofocus>
+            <input type="text" class="form-control form-control-premium" id="nombre" name="nombre" required autocomplete="given-name">
         </div>
         <div class="col-6">
             <label for="apellido" class="form-label text-secondary small text-uppercase fw-semibold">Apellido</label>
-            <input type="text" class="form-control form-control-premium" id="apellido" name="apellido" required>
+            <input type="text" class="form-control form-control-premium" id="apellido" name="apellido" required autocomplete="family-name">
         </div>
     </div>
 
     <div class="mb-3">
         <label for="email" class="form-label text-secondary small text-uppercase fw-semibold">Correo Electrónico</label>
-        <input type="email" class="form-control form-control-premium" id="email" name="email" required>
+        <input type="email" class="form-control form-control-premium" id="email" name="email" required autocomplete="email">
     </div>
 
     <!-- Contraseñas acopladas en 2 columnas -->
     <div class="row g-2 mb-3">
         <div class="col-6">
             <label for="clave" class="form-label text-secondary small text-uppercase fw-semibold">Contraseña</label>
-            <input type="password" class="form-control form-control-premium" id="clave" name="clave" minlength="8" required>
+            <input type="password" class="form-control form-control-premium" id="clave" name="clave" minlength="8" required autocomplete="new-password">
         </div>
         <div class="col-6">
             <label for="repetir_clave" class="form-label text-secondary small text-uppercase fw-semibold">Repetí contraseña</label>
@@ -53,9 +53,26 @@ $error = $_GET['error'] ?? null;
     <hr class="border-secondary border-opacity-25 my-3">
 
     <!-- ============ DATOS OPCIONALES ============ -->
-    <h6 class="text-danger text-uppercase small fw-bold mb-1">Contanos más sobre vos <span class="text-secondary fw-normal normal-case">(opcional)</span></h6>
-    <p class="text-secondary small mb-3">Nos ayuda a ofrecerte mejores precios y compatibilidad de productos.</p>
+    <section class="auth-profile"><div class="auth-profile-title"><h2>Agregá tu auto.</h2><span>Opcional</span></div><p>Tu vehículo y tus datos, guardados en tu perfil.</p>
 
+    <!-- Vehículo acoplado -->
+    <div class="row g-2 mb-3">
+        <div class="col-5">
+            <label for="auto_marca" class="form-label text-secondary small text-uppercase fw-semibold">Marca del auto</label>
+            <input type="text" class="form-control form-control-premium" id="auto_marca" name="auto_marca" placeholder="Ej: Nissan">
+        </div>
+        <div class="col-5">
+            <label for="auto_modelo" class="form-label text-secondary small text-uppercase fw-semibold">Modelo</label>
+            <input type="text" class="form-control form-control-premium" id="auto_modelo" name="auto_modelo" placeholder="Ej: Kicks">
+        </div>
+        <div class="col-2">
+            <label for="auto_anio" class="form-label text-secondary small text-uppercase fw-semibold">Año</label>
+            <input type="number" class="form-control form-control-premium" id="auto_anio" name="auto_anio" placeholder="2020" min="1980" max="2030">
+        </div>
+    </div>
+
+
+    <h3 class="auth-profile-subtitle">Contacto y dirección</h3>
     <!-- Teléfono y Frecuencia de Compra juntos -->
     <div class="row g-2 mb-3">
         <div class="col-6">
@@ -115,22 +132,7 @@ $error = $_GET['error'] ?? null;
         </div>
     </div>
 
-    <!-- Vehículo acoplado -->
-    <div class="row g-2 mb-3">
-        <div class="col-5">
-            <label for="auto_marca" class="form-label text-secondary small text-uppercase fw-semibold">Marca del auto</label>
-            <input type="text" class="form-control form-control-premium" id="auto_marca" name="auto_marca" placeholder="Ej: Nissan">
-        </div>
-        <div class="col-5">
-            <label for="auto_modelo" class="form-label text-secondary small text-uppercase fw-semibold">Modelo</label>
-            <input type="text" class="form-control form-control-premium" id="auto_modelo" name="auto_modelo" placeholder="Ej: Kicks">
-        </div>
-        <div class="col-2">
-            <label for="auto_anio" class="form-label text-secondary small text-uppercase fw-semibold">Año</label>
-            <input type="number" class="form-control form-control-premium" id="auto_anio" name="auto_anio" placeholder="2020" min="1980" max="2030">
-        </div>
-    </div>
-
+    </section>
     <!-- Checkboxes -->
     <div class="form-check mb-2">
         <input class="form-check-input" type="checkbox" id="acepta_descuentos" name="acepta_descuentos" value="1">

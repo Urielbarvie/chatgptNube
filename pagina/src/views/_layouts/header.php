@@ -49,7 +49,7 @@ if (!empty($_SESSION['usuario']['id']) && !empty($_SESSION['usuario']['jwt'])) {
                 </a>
                 <div class="flex-grow-1 mx-lg-4 my-2 my-lg-0 order-3 order-lg-0 position-relative" id="searchWrapper">
                     <label class="mvb-global-search-label" for="searchInput">Buscar en toda la tienda</label>
-                    <form class="d-flex" role="search" id="<?= !empty($isHomePage) || !empty($isCatalogPage) ? 'catalogSearchForm' : 'searchForm' ?>" method="GET" action="<?= BASE_URL ?>/src/views/catalogo.php">
+                    <form class="d-flex" role="search" id="<?= !empty($isHomePage) || !empty($isCatalogPage) || !empty($isAuthPage) ? 'catalogSearchForm' : 'searchForm' ?>" method="GET" action="<?= BASE_URL ?>/src/views/catalogo.php">
                         <div class="input-group">
                             <input type="search" class="form-control form-control-premium border-end-0" id="searchInput" name="buscar" value="<?= !empty($isCatalogPage) ? htmlspecialchars($busqueda ?? '') : '' ?>" placeholder="Buscar productos, marcas y más..." aria-label="Buscar en toda la tienda" autocomplete="off">
                             <button class="btn btn-premium-red px-3" type="submit" id="searchBtn" aria-label="Buscar">
@@ -112,7 +112,7 @@ if (!empty($_SESSION['usuario']['id']) && !empty($_SESSION['usuario']['jwt'])) {
             </div>
         </nav>
 
-        <?php if (empty($isHomePage) && empty($isCatalogPage) && basename($_SERVER['PHP_SELF']) !== 'carrito.php'): ?>
+        <?php if (empty($isHomePage) && empty($isCatalogPage) && empty($isAuthPage) && basename($_SERVER['PHP_SELF']) !== 'carrito.php'): ?>
         <!-- Hero Section -->
         <div class="container py-5">
             <div class="row align-items-center g-5">

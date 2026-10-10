@@ -11,5 +11,6 @@
 <?php require_once __DIR__ . '/chatbot.php'; ?>
 <script>window.BASE_URL = <?= json_encode(BASE_URL) ?>;</script>
 <script src="<?= BASE_URL ?>/assets/js/app.js" defer></script>
+<script src="<?= BASE_URL ?>/assets/js/account.js?v=<?= filemtime(__DIR__ . '/../../../assets/js/account.js') ?>" defer></script>
 </body>
 </html>
