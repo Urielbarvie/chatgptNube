@@ -1,5 +1,6 @@
                 </div>
                 <!-- /Panel del formulario -->
+                <aside class="auth-side auth-brand-side" aria-label="Más marcas de MVB"><?php renderMarcasCuenta(array_slice($seleccionMarcas,3,3)); ?></aside>
 
             </div>
         </div>

@@ -36,7 +36,7 @@ if (!empty($_SESSION['usuario']['id']) && !empty($_SESSION['usuario']['jwt'])) {
     <link href="<?= BASE_URL ?>/assets/css/style.css?v=<?= filemtime(__DIR__ . '/../../../assets/css/style.css') ?>" rel="stylesheet">
 </head>
 
-<body class="<?= !empty($isHomePage) ? 'mvb-home' : (!empty($isCatalogPage) ? 'mvb-catalog-page' : '') ?>">
+<body class="<?= !empty($isHomePage) ? 'mvb-home' : (!empty($isCatalogPage) ? 'mvb-catalog-page' : (!empty($isOrdersPage) ? 'mvb-orders-page' : '')) ?>">
 
     <!-- Header / Navbar -->
     <header class="mvb-site-header">
@@ -95,6 +95,7 @@ if (!empty($_SESSION['usuario']['id']) && !empty($_SESSION['usuario']['jwt'])) {
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="userMenu">
                                     <li class="mvb-menu-caption">TU CUENTA MVB</li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/src/views/user/pedidos.php">Mis pedidos ↗</a></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/src/views/user/profile.php">Mi perfil ↗</a></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/src/views/carrito.php">Mi carrito ↗</a></li>
                                     <li><hr class="dropdown-divider"></li>
@@ -112,7 +113,7 @@ if (!empty($_SESSION['usuario']['id']) && !empty($_SESSION['usuario']['jwt'])) {
             </div>
         </nav>
 
-        <?php if (empty($isHomePage) && empty($isCatalogPage) && empty($isAuthPage) && basename($_SERVER['PHP_SELF']) !== 'carrito.php'): ?>
+        <?php if (empty($isHomePage) && empty($isCatalogPage) && empty($isAuthPage) && empty($isOrdersPage) && basename($_SERVER['PHP_SELF']) !== 'carrito.php'): ?>
         <!-- Hero Section -->
         <div class="container py-5">
             <div class="row align-items-center g-5">

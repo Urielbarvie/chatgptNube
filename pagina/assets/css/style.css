@@ -1135,3 +1135,12 @@ body {
 .catalog-clear-search {display:inline-block;font-size:11px;color:#9a2537;margin-top:9px}
 @media(max-width:991px){.catalog-results-heading{flex-direction:column;gap:16px}.catalog-search{width:100%}}
 @media(max-width:767px){.mvb-catalog{margin-top:18px!important}.catalog-search-controls #catalog-search{font-size:16px}.catalog-search{padding:13px}.catalog-breadcrumb{margin-bottom:20px}}
+
+.checkout-form label{display:block;font-size:12px;color:#c7c3cc;margin:14px 0 7px}.checkout-form input,.checkout-form select,.checkout-form textarea{width:100%}
+.order-history{max-width:1000px}.order-card,.order-empty{background:#1b1b1e;border:1px solid #363239;border-radius:10px;padding:25px;margin-bottom:20px;color:#eee}
+.order-card>header{display:flex;align-items:start;justify-content:space-between;gap:15px;border-bottom:1px solid #39343c;padding-bottom:16px}.order-card>header>div>span{font-size:16px;font-weight:700}.order-card>header p{font-size:12px;color:#aaa4b0;margin:6px 0 0}.order-state{background:#302029;border:1px solid #8a4155;color:#ffc0cf;border-radius:20px;padding:5px 10px;font-size:12px}
+.order-item{display:flex;justify-content:space-between;gap:20px;padding:18px 0;border-bottom:1px solid #363139}.order-item strong{font-size:14px}.order-item p{font-size:12px;color:#b4adbb;margin:5px 0 0}.order-summary{display:flex;justify-content:space-between;gap:15px;margin:20px 0;font-size:14px}.order-summary strong{font-size:19px;color:#ff8b9e}.order-details summary{font-size:13px;cursor:pointer;color:#ffadbc}.order-details dl{display:grid;grid-template-columns:160px 1fr;gap:10px;padding-top:20px;font-size:13px}.order-details dt{color:#aaa3b1}.order-details dd{margin:0;overflow-wrap:anywhere}.order-empty p{color:#afa8b5}
+@media(max-width:767px){.order-card{padding:18px}.order-details dl{grid-template-columns:1fr;gap:5px}.order-details dd{margin-bottom:10px}.checkout-form .form-control-premium{font-size:16px}}
+
+.mvb-site-header #searchInput{color:#eee!important}.mvb-site-header #searchInput::placeholder{color:#aaa4b0!important}
+@media(max-width:767px){.mvb-orders-page #mv-chat{position:relative;right:auto;bottom:auto;width:90%;margin:0 auto 22px;text-align:right}}

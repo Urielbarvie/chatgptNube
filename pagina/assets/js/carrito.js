@@ -109,10 +109,10 @@ export async function eliminarDelCarrito(idDetalleCarrito) {
     }
 }
 
-export async function finalizarCompra() {
+export async function finalizarCompra(datos) {
     const endpoint = `${BASE_URL}/src/controllers/auth/checkout_controller.php`;
     try {
-        const res = await fetch(endpoint, { method: 'POST' });
+        const res = await fetch(endpoint, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(datos) });
         return await res.json();
     } catch (error) {
         console.error('Error al finalizar la compra:', error);

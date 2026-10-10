@@ -30,3 +30,5 @@ node_modules/
 /storage/strapi-database.sql
 
 /storage/categorias-antes-*.sql
+
+/storage/pedidos-antes-*.sql

@@ -46,13 +46,15 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::detalle-compra.detalle-compra",
-      "mappedBy": "producto"
+      "mappedBy": "producto",
+      "private": true
     },
     "detalle_carritos": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::detalle-carrito.detalle-carrito",
-      "mappedBy": "producto"
+      "mappedBy": "producto",
+      "private": true
     },
     "Precio_oferta": {
       "type": "decimal",

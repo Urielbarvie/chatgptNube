@@ -99,3 +99,13 @@ El menú del catálogo usa grupos plegables. Elegir «Ver todo» incluye los pro
 `mi-proyecto-strapi/src/organizar-categorias.js` aplica una única migración de datos al iniciar Strapi. Conserva los productos y reúne las categorías duplicadas de alfombras, cubrevolantes y celulares. Los duplicados permanecen como borradores recuperables; la operación usa una transacción. El registro `catalogo/arbol-v1` evita repetirla en los siguientes arranques. Antes de ejecutarla en otra instalación, hacer un respaldo privado de MySQL.
 
 La migración `completar-categorias.js` clasifica los productos de los grupos generales en hojas específicas y elimina Fragancias (trasladando cualquier producto a Aromatizantes). Usa una transacción, comprueba que no cambie la cantidad de productos publicados y sólo se ejecuta una vez (`catalogo/arbol-v2`). El catálogo oculta ramas sin productos, que reaparecen cuando reciben contenido.
+
+## Cuenta e historial de pedidos
+
+Login y registro muestran el formulario centrado con pequeños productos y sus marcas a los costados. En teléfonos se prioriza el formulario.
+
+El menú de la cuenta incluye «Mis pedidos». Cada compra nueva conserva una copia de los productos, marcas, cantidades, precios y subtotales del momento de la compra, además de fecha, moneda, contacto, retiro o envío, dirección, método y estado del pago, estado del pedido, costo de envío, seguimiento y notas. Los pedidos anteriores muestran los datos disponibles; los campos que nunca se registraron se indican como tales.
+
+En Strapi, Content Manager → Compra permite actualizar Estado, Estado_pago, Costo_envio, Seguimiento y Notas. Los pedidos comienzan pendientes: no hay cobro automático ni pasarela de tarjetas. El envío se cotiza posteriormente; no se presenta como gratis. Cancelar administrativamente un pedido requiere revisar y devolver su inventario manualmente.
+
+El servidor calcula los importes y comprueba el stock dentro de una transacción. Cada carrito sólo genera una compra. El acceso al historial queda limitado a su propietario y el formulario usa protección CSRF. Al reiniciar Strapi se agregan los campos y los permisos necesarios al rol Authenticated; no se habilita acceso público a los pedidos. Las bases y respaldos privados no se suben a GitHub.
