@@ -105,8 +105,8 @@ function obtenerProductosDelCarrito(string $jwt, int $idUsuario): array
 function agregarProductoAlCarrito(string $jwt, int $idUsuario, int $idProducto, int $cantidad): array
 {
     $producto = obtenerProductoPorId($idProducto);
-    if (!$producto || $cantidad <= 0 || $cantidad > $producto['stock']) {
-        return ['success' => false, 'message' => 'Cantidad o producto inválido; revisá el stock.'];
+    if (!$producto || $cantidad <= 0 || $cantidad > 9999) {
+        return ['success' => false, 'message' => 'Cantidad o producto inválido.'];
     }
     $carrito = obtenerCarritoActivoRaw($jwt, $idUsuario);
     $idCarrito = $carrito['documentId'] ?? crearCarritoActivo($jwt, $idUsuario);
@@ -126,7 +126,7 @@ function agregarProductoAlCarrito(string $jwt, int $idUsuario, int $idProducto, 
 
     if ($detalleExistente) {
         $nuevaCantidad = (int) ($detalleExistente['Cantidad'] ?? 0) + $cantidad;
-        if ($nuevaCantidad > $producto['stock']) return ['success' => false, 'message' => 'Stock insuficiente.'];
+        if ($nuevaCantidad > 9999) return ['success' => false, 'message' => 'La cantidad máxima por producto es 9999.'];
         $resultado = strapiRequest('PUT', 'detalle-carritos/' . $detalleExistente['documentId'], [], [
             'data' => ['Cantidad' => $nuevaCantidad],
         ], $jwt);
@@ -159,8 +159,8 @@ function actualizarCantidadEnCarrito(string $jwt, int $idUsuario, int $idDetalle
         return ['success' => false, 'message' => 'El producto no pertenece a tu carrito.'];
     }
 
-    if ($cantidad <= 0 || $cantidad > (int) ($detalle['producto']['Stock'] ?? 0)) {
-        return ['success' => false, 'message' => 'Cantidad inválida o stock insuficiente.'];
+    if ($cantidad <= 0 || $cantidad > 9999) {
+        return ['success' => false, 'message' => 'Cantidad inválida.'];
     }
     $resultado = strapiRequest('PUT', 'detalle-carritos/' . $detalle['documentId'], [], [
         'data' => ['Cantidad' => $cantidad],

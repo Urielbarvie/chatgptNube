@@ -114,7 +114,7 @@ require_once __DIR__ . '/_layouts/header.php';
                     <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
                         <div class="input-group" style="max-width: 140px;">
                             <button class="btn btn-premium-outline" type="button" id="qtyMinus">−</button>
-                            <input type="number" id="qtyInput" aria-label="Cantidad de unidades" class="form-control form-control-premium text-center" value="1" min="1" max="<?= max(1, (int) $producto['stock']) ?>" <?= (int) $producto['stock'] <= 0 ? 'disabled' : '' ?>>
+                            <input type="number" id="qtyInput" aria-label="Cantidad de unidades" class="form-control form-control-premium text-center" value="1" min="1" max="9999" <?= (int) $producto['stock'] <= 0 ? 'disabled' : '' ?>>
                             <button class="btn btn-premium-outline" type="button" id="qtyPlus">+</button>
                         </div>
                         <button type="button" class="btn btn-premium-red product-add-button flex-grow-1 py-3"

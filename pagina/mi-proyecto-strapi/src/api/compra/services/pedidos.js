@@ -46,6 +46,7 @@ module.exports = ({ strapi }) => ({
     if (body.entrega === 'Envio' && (!customer.direccion || !customer.ciudad || !customer.provincia || !customer.codigo_postal)) {
       throw new Error('Completá la dirección de envío.');
     }
+    const deductStock = strapi.config.get('server.ordersDeductStock', false);
     return strapi.db.transaction(async ({ trx }) => {
       const carts = strapi.db.query(CART);
       const cart = await carts.findOne({
@@ -80,9 +81,11 @@ module.exports = ({ strapi }) => ({
         const offer = money(lockedProduct[offerColumn]);
         const unit = offer > 0 && offer < price ? offer : price;
         if (!Number.isSafeInteger(unit) || unit <= 0) throw new Error('Precio inválido.');
-        if (Number(lockedProduct[stockColumn]) < quantity) throw new Error('Stock insuficiente: ' + product.Nombre);
-        const newStock = Number(lockedProduct[stockColumn]) - quantity;
-        await strapi.db.query(PRODUCT).updateMany({ where: { documentId: product.documentId }, data: { Stock: newStock } });
+        if (deductStock) {
+          if (Number(lockedProduct[stockColumn]) < quantity) throw new Error('Stock insuficiente: ' + product.Nombre);
+          const newStock = Number(lockedProduct[stockColumn]) - quantity;
+          await strapi.db.query(PRODUCT).updateMany({ where: { documentId: product.documentId }, data: { Stock: newStock } });
+        }
         items.push({
           producto_document_id: product.documentId, nombre: product.Nombre,
           marca: product.Marca || '', descripcion: product.Descripcion || '',

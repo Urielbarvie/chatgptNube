@@ -106,6 +106,12 @@ Login y registro muestran el formulario centrado con pequeños productos y sus m
 
 El menú de la cuenta incluye «Mis pedidos». Cada compra nueva conserva una copia de los productos, marcas, cantidades, precios y subtotales del momento de la compra, además de fecha, moneda, contacto, retiro o envío, dirección, método y estado del pago, estado del pedido, costo de envío, seguimiento y notas. Los pedidos anteriores muestran los datos disponibles; los campos que nunca se registraron se indican como tales.
 
-En Strapi, Content Manager → Compra permite actualizar Estado, Estado_pago, Costo_envio, Seguimiento y Notas. Los pedidos comienzan pendientes: no hay cobro automático ni pasarela de tarjetas. El envío se cotiza posteriormente; no se presenta como gratis. Cancelar administrativamente un pedido requiere revisar y devolver su inventario manualmente.
+En Strapi, Content Manager → Compra permite actualizar Estado, Estado_pago, Costo_envio, Seguimiento y Notas. Los pedidos comienzan pendientes: no hay cobro automático ni pasarela de tarjetas. El envío se cotiza posteriormente; no se presenta como gratis. En modo de ventas reales, cancelar administrativamente un pedido requiere revisar y devolver su inventario manualmente.
 
-El servidor calcula los importes y comprueba el stock dentro de una transacción. Cada carrito sólo genera una compra. El acceso al historial queda limitado a su propietario y el formulario usa protección CSRF. Al reiniciar Strapi se agregan los campos y los permisos necesarios al rol Authenticated; no se habilita acceso público a los pedidos. Las bases y respaldos privados no se suben a GitHub.
+El servidor calcula los importes dentro de una transacción. Cada carrito sólo genera una compra. El acceso al historial queda limitado a su propietario y el formulario usa protección CSRF. Al reiniciar Strapi se agregan los campos y los permisos necesarios al rol Authenticated; no se habilita acceso público a los pedidos. Las bases y respaldos privados no se suben a GitHub.
+
+### Pedidos artificiales e inventario
+
+Por defecto `ORDERS_DEDUCT_STOCK=false`: generar pedidos no descuenta ni reserva stock y permite cantidades superiores al inventario (máximo 9999 por producto en un pedido). El stock cargado del catálogo permanece intacto. Los pedidos siguen guardando todos sus datos en el historial. No se restaura ni se importa inventario al confirmar pedidos.
+
+Para comenzar ventas reales, configurar `ORDERS_DEDUCT_STOCK=true` en `mi-proyecto-strapi/.env` y reiniciar Strapi. Sólo los pedidos nuevos comprobarán y descontarán stock; los pedidos artificiales anteriores no afectan el inventario retroactivamente.
