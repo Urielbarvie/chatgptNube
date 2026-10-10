@@ -91,3 +91,9 @@ Comprobado con cuentas temporales: registro, guardado, múltiples direcciones, v
 ## Copia chatgptNube
 
 Las imágenes de public/uploads se incluyen en GitHub para reproducir el catálogo. La base MySQL y storage/strapi-database.sql permanecen locales y no se versionan. El script iniciar-tienda.ps1 inicia XAMPP y Strapi en Windows; ver también el README de la raíz del repositorio.
+
+## Árbol de categorías
+
+El menú del catálogo usa grupos plegables. Elegir «Ver todo» incluye los productos de todas las categorías descendientes. La rama seleccionada se abre automáticamente; las otras quedan cerradas.
+
+`mi-proyecto-strapi/src/organizar-categorias.js` aplica una única migración de datos al iniciar Strapi. Conserva los productos y reúne las categorías duplicadas de alfombras, cubrevolantes y celulares. Los duplicados permanecen como borradores recuperables; la operación usa una transacción. El registro `catalogo/arbol-v1` evita repetirla en los siguientes arranques. Antes de ejecutarla en otra instalación, hacer un respaldo privado de MySQL.

@@ -9,6 +9,8 @@ require_once __DIR__ . '/productos_card.php';                       // renderPro
 // "atrás/adelante" del navegador, y recargar sin perder el filtro)
 // ---------------------------------------------------------------------------
 $categoriaId = isset($_GET['categoria']) ? (int) $_GET['categoria'] : null;
+// Compatibilidad con enlaces de categorías unificadas.
+$categoriaId = [128 => 104, 130 => 100, 138 => 103][$categoriaId] ?? $categoriaId;
 $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 
 $todasCategorias = obtenerArbolCategorias();
@@ -36,13 +38,36 @@ $enlaceCategoria = function($id) use ($busqueda) {
     if ($busqueda !== '') $params['buscar'] = $busqueda;
     return BASE_URL . '/src/views/catalogo.php' . ($params ? '?' . http_build_query($params) : '');
 };
-$renderArbol = function($padre, $visitados = []) use (&$renderArbol, $porPadre, $categoriaId, $enlaceCategoria) {
+// Solo se abre el camino de la categoría elegida.
+$caminoActivo = [];
+$actual = $categoriaActual;
+while ($actual && !in_array((int)$actual['id_categoria'], $caminoActivo, true)) {
+    $caminoActivo[] = (int)$actual['id_categoria'];
+    $padreId = (int)($actual['id_categoria_padre'] ?? 0);
+    $actual = null;
+    foreach ($todasCategorias as $cat) {
+        if ((int)$cat['id_categoria'] === $padreId) $actual = $cat;
+    }
+}
+$renderArbol = function($padre, $visitados = []) use (&$renderArbol, $porPadre, $categoriaId, $enlaceCategoria, $caminoActivo) {
     echo '<ul class="catalog-category-tree">';
     foreach ($porPadre[$padre] ?? [] as $cat) {
         $id = (int)$cat['id_categoria'];
         if (in_array($id, $visitados, true)) continue;
-        echo '<li><a href="' . htmlspecialchars($enlaceCategoria($id), ENT_QUOTES) . '"' . ($categoriaId === $id ? ' aria-current="page"' : '') . '>' . htmlspecialchars($cat['nombre']) . '</a>';
-        if (!empty($porPadre[$id])) $renderArbol($id, [...$visitados, $id]);
+        $nombre = htmlspecialchars($cat['nombre'], ENT_QUOTES, 'UTF-8');
+        $enlace = htmlspecialchars($enlaceCategoria($id), ENT_QUOTES, 'UTF-8');
+        $seleccionada = $categoriaId === $id ? ' aria-current="page"' : '';
+        echo '<li>';
+        if (!empty($porPadre[$id])) {
+            $abierta = in_array($id, $caminoActivo, true) ? ' open' : '';
+            echo '<details class="catalog-category-branch"' . $abierta . '>';
+            echo '<summary>' . $nombre . '</summary>';
+            echo '<a class="catalog-category-all" href="' . $enlace . '"' . $seleccionada . '>Ver todo</a>';
+            $renderArbol($id, [...$visitados, $id]);
+            echo '</details>';
+        } else {
+            echo '<a href="' . $enlace . '"' . $seleccionada . '>' . $nombre . '</a>';
+        }
         echo '</li>';
     }
     echo '</ul>';

@@ -1108,3 +1108,12 @@ body {
 }
 
 .catalog-category-tree {list-style:none;padding:0;margin:0}.catalog-category-tree ul {padding-left:16px;border-left:1px solid #49494f;margin-left:8px}.catalog-category-tree a {display:block;padding:9px 10px;color:#c9c9cd;text-decoration:none;font-size:14px}.catalog-category-tree a:hover,.catalog-category-tree a[aria-current="page"] {background:#3a2027;color:#ff969a;border-radius:6px}.catalog-filter-context {color:#c9c9cd;font-size:14px}.catalog-filter-context a {color:#ff969a;margin-left:15px}
+
+/* Árbol de categorías plegable. */
+.catalog-category-branch > summary {list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:11px 10px;color:#e2e2e7;font-size:14px;border-radius:6px;gap:10px}
+.catalog-category-branch > summary::-webkit-details-marker {display:none}
+.catalog-category-branch > summary::after {content:"+";color:#ff969a;font-size:20px;line-height:1}
+.catalog-category-branch[open] > summary::after {content:"−"}
+.catalog-category-branch > summary:hover {background:#3a2027}
+.catalog-category-branch > summary:focus-visible {outline:2px solid #ff969a;outline-offset:2px}
+.catalog-category-tree .catalog-category-all {font-size:12px;color:#ff969a;padding-left:20px}
