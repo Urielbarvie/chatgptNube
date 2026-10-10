@@ -97,3 +97,5 @@ Las imágenes de public/uploads se incluyen en GitHub para reproducir el catálo
 El menú del catálogo usa grupos plegables. Elegir «Ver todo» incluye los productos de todas las categorías descendientes. La rama seleccionada se abre automáticamente; las otras quedan cerradas.
 
 `mi-proyecto-strapi/src/organizar-categorias.js` aplica una única migración de datos al iniciar Strapi. Conserva los productos y reúne las categorías duplicadas de alfombras, cubrevolantes y celulares. Los duplicados permanecen como borradores recuperables; la operación usa una transacción. El registro `catalogo/arbol-v1` evita repetirla en los siguientes arranques. Antes de ejecutarla en otra instalación, hacer un respaldo privado de MySQL.
+
+La migración `completar-categorias.js` clasifica los productos de los grupos generales en hojas específicas y elimina Fragancias (trasladando cualquier producto a Aromatizantes). Usa una transacción, comprueba que no cambie la cantidad de productos publicados y sólo se ejecuta una vez (`catalogo/arbol-v2`). El catálogo oculta ramas sin productos, que reaparecen cuando reciben contenido.

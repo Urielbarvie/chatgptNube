@@ -10,10 +10,23 @@ require_once __DIR__ . '/productos_card.php';                       // renderPro
 // ---------------------------------------------------------------------------
 $categoriaId = isset($_GET['categoria']) ? (int) $_GET['categoria'] : null;
 // Compatibilidad con enlaces de categorías unificadas.
-$categoriaId = [128 => 104, 130 => 100, 138 => 103][$categoriaId] ?? $categoriaId;
+$categoriaId = [83 => 142, 128 => 104, 130 => 100, 138 => 103][$categoriaId] ?? $categoriaId;
 $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 
+$catalogoCompleto = obtenerTodosLosProductos();
 $todasCategorias = obtenerArbolCategorias();
+// No mostrar ramas vacías; reaparecen al cargar productos desde Strapi.
+$categoriasConProductos = [];
+foreach ($catalogoCompleto as $producto) $categoriasConProductos[(int)$producto['id_categoria']] = true;
+do {
+    $cantidadAnterior = count($categoriasConProductos);
+    foreach ($todasCategorias as $cat) {
+        if (isset($categoriasConProductos[(int)$cat['id_categoria']]) && $cat['id_categoria_padre']) {
+            $categoriasConProductos[(int)$cat['id_categoria_padre']] = true;
+        }
+    }
+} while (count($categoriasConProductos) !== $cantidadAnterior);
+$todasCategorias = array_values(array_filter($todasCategorias, fn($cat) => isset($categoriasConProductos[(int)$cat['id_categoria']])));
 $porPadre = [];
 foreach ($todasCategorias as $cat) $porPadre[(int)($cat['id_categoria_padre'] ?? 0)][] = $cat;
 $idsCategoria = [];
@@ -26,7 +39,7 @@ while ($pendientes) {
     $idsCategoria[] = $id;
     foreach ($porPadre[$id] ?? [] as $hija) $pendientes[] = (int)$hija['id_categoria'];
 }
-$productos = array_values(array_filter(obtenerTodosLosProductos(), function($p) use ($categoriaId, $idsCategoria, $busqueda) {
+$productos = array_values(array_filter($catalogoCompleto, function($p) use ($categoriaId, $idsCategoria, $busqueda) {
     if ($categoriaId !== null && !in_array((int)$p['id_categoria'], $idsCategoria, true)) return false;
     $texto = ($p['nombre'] ?? '') . ' ' . ($p['descripcion'] ?? '') . ' ' . ($p['marca'] ?? '');
     $termino = strtolower(trim($busqueda)) === 'revigal' ? 'revi' : $busqueda;
