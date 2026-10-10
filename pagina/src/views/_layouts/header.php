@@ -49,8 +49,9 @@ if (!empty($_SESSION['usuario']['id']) && !empty($_SESSION['usuario']['jwt'])) {
                 </a>
                 <div class="flex-grow-1 mx-lg-4 my-2 my-lg-0 order-3 order-lg-0 position-relative" id="searchWrapper">
                     <form class="d-flex" role="search" id="<?= !empty($isHomePage) || !empty($isCatalogPage) ? 'catalogSearchForm' : 'searchForm' ?>" method="GET" action="<?= BASE_URL ?>/src/views/catalogo.php">
+                        <?php if (!empty($isCatalogPage) && isset($categoriaId)): ?><input type="hidden" name="categoria" value="<?= (int)$categoriaId ?>"><?php endif; ?>
                         <div class="input-group">
-                            <input type="search" class="form-control form-control-premium border-end-0" id="searchInput" name="buscar" placeholder="Buscar productos, marcas y más..." aria-label="Buscar" autocomplete="off">
+                            <input type="search" class="form-control form-control-premium border-end-0" id="searchInput" name="buscar" value="<?= !empty($isCatalogPage) ? htmlspecialchars($busqueda ?? '') : '' ?>" placeholder="Buscar productos, marcas y más..." aria-label="Buscar" autocomplete="off">
                             <button class="btn btn-premium-red px-3" type="submit" id="searchBtn" aria-label="Buscar">
                                 🔍
                             </button>

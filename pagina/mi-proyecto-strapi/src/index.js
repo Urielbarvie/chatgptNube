@@ -1,20 +1,16 @@
 'use strict';
-
 module.exports = {
-  /**
-   * An asynchronous register function that runs before
-   * your application is initialized.
-   *
-   * This gives you an opportunity to extend code.
-   */
-  register(/*{ strapi }*/) {},
-
-  /**
-   * An asynchronous bootstrap function that runs before
-   * your application gets started.
-   *
-   * This gives you an opportunity to set up your data model,
-   * run jobs, or perform some special logic.
-   */
-  bootstrap(/*{ strapi }*/) {},
+ register() {},
+ async bootstrap({ strapi }) {
+  const confirmed = {'TE-006':'IAEL','TV-006':'IAEL','TE-001':'IAEL','SG-998':'IAEL','FP-010':'IAEL','FP-011':'IAEL','VT-017G':'IAEL','RE712':'Revigal'};
+  const products = strapi.documents('api::producto.producto');
+  for (const [sku, Marca] of Object.entries(confirmed)) {
+   const matches = await products.findMany({status:'published',filters:{Descripcion:`Código: ${sku}.`}});
+   for (const product of matches) {
+    if (product.Marca && product.Marca !== 'Por identificar') continue;
+    await products.update({documentId:product.documentId,data:{Marca}});
+    await products.publish({documentId:product.documentId});
+   }
+  }
+ }
 };

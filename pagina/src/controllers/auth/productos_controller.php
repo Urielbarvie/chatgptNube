@@ -16,6 +16,7 @@ require_once __DIR__ . '/../../config/strapi_client.php';
 function obtenerLogoMarca(array $producto): ?string
 {
     $nombre = strtolower(($producto['marca'] ?? '') . ' ' . ($producto['nombre'] ?? ''));
+    if (strtolower(trim($producto['marca'] ?? '')) === 'revi') return BASE_URL . '/assets/img/marca-revigal.png';
     foreach (['revigal' => 'revigal', 'iael' => 'iael', 'goodyear' => 'goodyear', 'barbie' => 'barbie', 'armor all' => 'armorall', 'armorall' => 'armorall', 'california scents' => 'california-scents'] as $marca => $archivo) {
         if (str_contains($nombre, $marca)) {
             return BASE_URL . '/assets/img/marca-' . $archivo . '.png';
@@ -246,6 +247,7 @@ function buscarProductos(string $termino): array
             '$or' => [
                 ['Nombre'      => ['$containsi' => $termino]],
                 ['Descripcion' => ['$containsi' => $termino]],
+                ['Marca' => ['$containsi' => strtolower(trim($termino)) === 'revigal' ? 'Revi' : $termino]],
             ],
         ],
         'populate'   => ['categoria', 'Imagen'],
@@ -255,4 +257,18 @@ function buscarProductos(string $termino): array
 
     $items = $resultado['data']['data'] ?? [];
     return array_map('mapearProducto', $items);
+}
+
+function obtenerArbolCategorias(): array
+{
+    $categorias = [];
+    $inicio = 0;
+    do {
+        $resultado = strapiRequest('GET', 'categorias', ['populate' => ['categoria'], 'sort' => 'Nombre:asc', 'pagination' => ['start' => $inicio, 'limit' => 100]]);
+        $items = $resultado['data']['data'] ?? [];
+        foreach ($items as $item) $categorias[] = mapearCategoria($item);
+        $inicio += count($items);
+        $total = (int)($resultado['data']['meta']['pagination']['total'] ?? $inicio);
+    } while ($items && $inicio < $total);
+    return $categorias;
 }

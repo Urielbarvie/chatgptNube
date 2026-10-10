@@ -1106,3 +1106,5 @@ body {
  .mvb-editorial-card { flex-direction: row; align-items: center; } .mvb-editorial-card img { width: 42%; height: 210px; }
  .mvb-editorial-card > div { padding: 18px; } .mvb-editorial-card h3 { font-size: 1.2rem; }
 }
+
+.catalog-category-tree {list-style:none;padding:0;margin:0}.catalog-category-tree ul {padding-left:16px;border-left:1px solid #49494f;margin-left:8px}.catalog-category-tree a {display:block;padding:9px 10px;color:#c9c9cd;text-decoration:none;font-size:14px}.catalog-category-tree a:hover,.catalog-category-tree a[aria-current="page"] {background:#3a2027;color:#ff969a;border-radius:6px}.catalog-filter-context {color:#c9c9cd;font-size:14px}.catalog-filter-context a {color:#ff969a;margin-left:15px}
