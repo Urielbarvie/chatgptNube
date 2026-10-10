@@ -1117,3 +1117,21 @@ body {
 .catalog-category-branch > summary:hover {background:#3a2027}
 .catalog-category-branch > summary:focus-visible {outline:2px solid #ff969a;outline-offset:2px}
 .catalog-category-tree .catalog-category-all {font-size:12px;color:#ff969a;padding-left:20px}
+
+/* Dos alcances de búsqueda: tienda completa y filtro del catálogo. */
+.mvb-global-search-label {display:block;font-size:10px;font-weight:600;letter-spacing:.04em;color:#c3c3cb;margin:0 0 6px 3px}
+.mvb-catalog {margin-top:25px!important}
+.catalog-results-heading {display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:22px}
+.catalog-results-heading h1 {font-size:clamp(23px,2.4vw,32px);overflow-wrap:anywhere}
+.catalog-search {background:#f4f3f0;border:1px solid #e3dfdc;border-radius:12px;padding:15px;width:min(100%,380px);flex-shrink:0}
+.catalog-search>label {display:block;font-size:12px;color:#55515a;margin:0 0 10px}
+.catalog-search>label strong {color:#a61930}
+.catalog-search-controls {display:flex;gap:8px}
+.catalog-search-controls #catalog-search {min-width:0;flex:1;background:#fff!important;color:#25252b!important;border:1px solid #cbc6ca!important;border-radius:6px;padding:10px 12px;font-size:13px;box-shadow:none}
+.catalog-search-controls #catalog-search::placeholder {color:#78727e!important}
+.catalog-search-controls #catalog-search:focus {border-color:#b61930!important;outline:2px solid #b6193022}
+.catalog-filter-button {border:1px solid #b61930;background:transparent;color:#a61930;border-radius:6px;padding:9px 14px;font-weight:600;font-size:13px}
+.catalog-filter-button:hover,.catalog-filter-button:focus-visible {background:#b61930;color:white}
+.catalog-clear-search {display:inline-block;font-size:11px;color:#9a2537;margin-top:9px}
+@media(max-width:991px){.catalog-results-heading{flex-direction:column;gap:16px}.catalog-search{width:100%}}
+@media(max-width:767px){.mvb-catalog{margin-top:18px!important}.catalog-search-controls #catalog-search{font-size:16px}.catalog-search{padding:13px}.catalog-breadcrumb{margin-bottom:20px}}

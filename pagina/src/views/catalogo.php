@@ -92,11 +92,6 @@ require_once __DIR__ . '/_layouts/header.php';
     <!-- Catálogo -->
     <main class="container my-5 mvb-catalog">
 
-        <div class="catalog-banner" aria-label="Accesorios, limpieza y herramientas">
-            <div><span>MULTIVENTAS BARVIE</span><h2>Cuidá cada detalle.</h2><p>Accesorios, limpieza y herramientas para tu vehículo.</p></div>
-            <img src="<?= BASE_URL ?>/assets/img/limpieza-productos/re551/re551_01.png" alt="Producto para limpieza vehicular" width="160" height="180">
-            <img src="<?= BASE_URL ?>/assets/img/herramientas-y-elevacion/ll-013/ll-013_01.png" alt="Juego de herramientas" width="200" height="180">
-        </div>
         <nav class="catalog-breadcrumb" aria-label="Ubicación"><a href="<?= BASE_URL ?>/index.php">Inicio</a> / <a href="<?= BASE_URL ?>/src/views/catalogo.php">Productos</a><?php if ($categoriaActual): ?> / <?= htmlspecialchars($categoriaActual['nombre']) ?><?php endif; ?></nav>
         <div class="catalog-layout">
         <aside class="catalog-sidebar" aria-label="Categorías">
@@ -107,9 +102,8 @@ require_once __DIR__ . '/_layouts/header.php';
         </aside>
         <section class="catalog-results" aria-label="Resultados del catálogo">
 
-        <p class="catalog-filter-context">Buscando en: <strong><?= htmlspecialchars($categoriaActual['nombre'] ?? 'Todo el catálogo') ?></strong> <?php if ($categoriaId !== null || $busqueda !== ''): ?><a href="<?= BASE_URL ?>/src/views/catalogo.php">Limpiar filtros</a><?php endif; ?></p>
         <!-- Encabezado + buscador propio del catálogo (GET) -->
-        <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
+        <div class="catalog-results-heading">
             <div>
                 <?php if ($busqueda !== ''): ?>
                     <a href="<?= BASE_URL ?>/src/views/catalogo.php" class="text-secondary text-decoration-none small d-inline-block mb-2">← Volver al catálogo</a>
@@ -119,15 +113,15 @@ require_once __DIR__ . '/_layouts/header.php';
                     <h1 class="fw-bold text-white text-uppercase tracking-wide m-0"><?= htmlspecialchars($categoriaActual['nombre']) ?></h1>
                 <?php else: ?>
                     <h1 class="fw-bold text-white text-uppercase tracking-wide m-0">Catálogo</h1>
-                    <p class="text-secondary mb-0">Explorá todos los productos o filtrá por categoría y búsqueda.</p>
+                    
                 <?php endif; ?>
             </div>
 
-            <form method="GET" action="<?= BASE_URL ?>/src/views/catalogo.php" class="d-flex gap-2 catalog-search">
+            <form method="GET" action="<?= BASE_URL ?>/src/views/catalogo.php" class="catalog-search" role="search" aria-label="Filtrar productos del catálogo">
                 <?php if ($categoriaId !== null): ?><input type="hidden" name="categoria" value="<?= $categoriaId ?>"><?php endif; ?>
-                <label for="catalog-search" class="visually-hidden">Buscar en el catálogo</label>
-                <input id="catalog-search" type="search" name="buscar" value="<?= htmlspecialchars($busqueda) ?>" class="form-control form-control-premium" placeholder="<?= $categoriaActual ? 'Buscar en ' . htmlspecialchars($categoriaActual['nombre']) : 'Buscar en todo el catálogo' ?>">
-                <button type="submit" class="btn btn-premium-red px-4">Buscar</button>
+                <label for="catalog-search">Filtrar en <strong><?= htmlspecialchars($categoriaActual['nombre'] ?? 'este catálogo') ?></strong></label><div class="catalog-search-controls">
+                <input id="catalog-search" type="search" name="buscar" value="<?= htmlspecialchars($busqueda) ?>" class="form-control form-control-premium" placeholder="Nombre o marca del producto">
+                <button type="submit" class="btn catalog-filter-button">Filtrar</button></div><?php if ($busqueda !== ''): ?><a class="catalog-clear-search" href="<?= htmlspecialchars(BASE_URL . '/src/views/catalogo.php' . ($categoriaId !== null ? '?categoria=' . $categoriaId : ''), ENT_QUOTES) ?>">Quitar búsqueda</a><?php endif; ?>
             </form>
         </div>
 

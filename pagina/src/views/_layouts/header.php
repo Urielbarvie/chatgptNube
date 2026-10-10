@@ -48,10 +48,10 @@ if (!empty($_SESSION['usuario']['id']) && !empty($_SESSION['usuario']['jwt'])) {
                     <img class="mvb-nav-logo" src="<?= BASE_URL ?>/assets/img/logo.jpg" alt="MVB · Multiventas Barvie" width="76" height="76"><span class="mvb-nav-name">MVB<small>MULTIVENTAS BARVIE</small></span>
                 </a>
                 <div class="flex-grow-1 mx-lg-4 my-2 my-lg-0 order-3 order-lg-0 position-relative" id="searchWrapper">
+                    <label class="mvb-global-search-label" for="searchInput">Buscar en toda la tienda</label>
                     <form class="d-flex" role="search" id="<?= !empty($isHomePage) || !empty($isCatalogPage) ? 'catalogSearchForm' : 'searchForm' ?>" method="GET" action="<?= BASE_URL ?>/src/views/catalogo.php">
-                        <?php if (!empty($isCatalogPage) && isset($categoriaId)): ?><input type="hidden" name="categoria" value="<?= (int)$categoriaId ?>"><?php endif; ?>
                         <div class="input-group">
-                            <input type="search" class="form-control form-control-premium border-end-0" id="searchInput" name="buscar" value="<?= !empty($isCatalogPage) ? htmlspecialchars($busqueda ?? '') : '' ?>" placeholder="Buscar productos, marcas y más..." aria-label="Buscar" autocomplete="off">
+                            <input type="search" class="form-control form-control-premium border-end-0" id="searchInput" name="buscar" value="<?= !empty($isCatalogPage) ? htmlspecialchars($busqueda ?? '') : '' ?>" placeholder="Buscar productos, marcas y más..." aria-label="Buscar en toda la tienda" autocomplete="off">
                             <button class="btn btn-premium-red px-3" type="submit" id="searchBtn" aria-label="Buscar">
                                 🔍
                             </button>
