@@ -51,8 +51,6 @@ function renderProductCard(array $p): string
             . '<span class="text-secondary small">Sin imagen</span></div>';
             }
             
-            $disabledAttr = (int) $p['stock'] <= 0 ? 'disabled' : '';
-            
     ob_start();
     ?>
     <div class="col-12 col-md-6" data-category="<?= (int) $p['id_categoria'] ?>">
@@ -68,12 +66,6 @@ function renderProductCard(array $p): string
             </div>
             <div class="border-top border-secondary border-opacity-10 pt-3 mt-3 d-flex justify-content-between align-items-center" onclick="event.stopPropagation();">
                 <span><?= $precioHtml ?></span>
-                        <button type="button"
-        class="btn btn-premium-red"
-        <?= $disabledAttr ?>
-        onclick="event.stopPropagation(); addToCart(<?= (int) $p['id_producto'] ?>, 1, <?= htmlspecialchars(json_encode($p['nombre'], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>)">
-    Agregar al carrito
-</button>
 
             </div>
         </div>

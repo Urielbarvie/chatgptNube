@@ -2,8 +2,7 @@
 // =============================================================================
 // CLIENTE HTTP COMPARTIDO PARA HABLAR CON LA API REST DE STRAPI
 // =============================================================================
-// Lo usan productos_controller.php, login.php, register.php, carrito.php,
-// carrito_controller.php y checkout_controller.php. Centralizarlo acá evita
+// Lo usan los controladores de productos, acceso y perfil. Centralizarlo acá evita
 // tener 6 copias del mismo curl_init() repartidas por el proyecto.
 
 require_once __DIR__ . '/database.php';
@@ -16,7 +15,7 @@ if (!defined('STRAPI_URL')) {
  * Hace una request HTTP a /api/{endpoint} de Strapi.
  *
  * @param string      $method   'GET' | 'POST' | 'PUT' | 'DELETE'
- * @param string      $endpoint p.ej. 'productos', 'auth/local', 'carritos/5'
+ * @param string      $endpoint p.ej. 'productos', 'auth/local', 'productos/5'
  * @param array       $query    query params (filters, populate, pagination, sort...)
  * @param array|null  $body     cuerpo a mandar como JSON (para auth/local, o { data: {...} })
  * @param string|null $token    JWT del usuario logueado, si la ruta lo necesita

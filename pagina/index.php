@@ -40,7 +40,6 @@ require_once __DIR__ . '/src/views/_layouts/header.php';
         <div class="mvb-section-heading"><h2 id="category-title">Explorá</h2></div>
         <nav class="mvb-page-shortcuts" aria-label="Accesos principales">
             <a href="<?= BASE_URL ?>/src/views/catalogo.php"><strong>Catálogo</strong></a>
-            <a href="<?= BASE_URL ?>/src/views/carrito.php"><strong>Carrito</strong></a>
             <a href="<?= BASE_URL ?>/src/views/<?= !empty($_SESSION['usuario']) ? 'user/profile.php' : 'auth/login.php' ?>"><strong>Cuenta</strong></a>
             <a href="#como-empezar"><strong>Contacto</strong></a>
         </nav>

@@ -59,7 +59,7 @@ Los únicos archivos adicionales de la funcionalidad de chat y perfil que se man
 
 ## Asistente de la tienda
 
-El asistente tiene respuestas programadas; no utiliza un servicio externo de inteligencia artificial. Ayuda con catálogo, carrito y registro. Guarda el historial por sesión en `storage/chat.db` y muestra los últimos 100 mensajes; ese límite de visualización no borra los anteriores.
+El asistente tiene respuestas programadas; no utiliza un servicio externo de inteligencia artificial. Ayuda con catálogo, marcas y registro. Guarda el historial por sesión en `storage/chat.db` y muestra los últimos 100 mensajes; ese límite de visualización no borra los anteriores.
 
 PHP necesita permiso de escritura sobre `storage` y la extensión pdo_sqlite. Este uso de PDO corresponde únicamente a SQLite del chat; los datos de la tienda se consultan mediante Strapi. No publicar `chat.db` ni compartir conversaciones en Git. La protección de `storage/.htaccess` requiere Apache configurado para respetarla; el servidor integrado de PHP no aplica esas reglas.
 
@@ -74,8 +74,6 @@ No subir `.env`, `mi-proyecto-strapi/.env`, `node_modules`, `build`, `.strapi`, 
 ## Funcionalidades pendientes
 
 
-- Carrito y compras necesitan autorización por propietario y una operación de compra transaccional antes de habilitar sus permisos generales en la API.
-- El bloque de más vendidos consulta detalles de compra, cuya lectura pública no está habilitada.
 
 Estos pendientes de la aplicación son independientes de la instalación de Strapi y de la consolidación de archivos.
 
@@ -100,18 +98,8 @@ El menú del catálogo usa grupos plegables. Elegir «Ver todo» incluye los pro
 
 La migración `completar-categorias.js` clasifica los productos de los grupos generales en hojas específicas y elimina Fragancias (trasladando cualquier producto a Aromatizantes). Usa una transacción, comprueba que no cambie la cantidad de productos publicados y sólo se ejecuta una vez (`catalogo/arbol-v2`). El catálogo oculta ramas sin productos, que reaparecen cuando reciben contenido.
 
-## Cuenta e historial de pedidos
+## Cuenta
 
-Login y registro muestran el formulario centrado con pequeños productos y sus marcas a los costados. En teléfonos se prioriza el formulario.
+Login y registro muestran el formulario centrado con productos y marcas a los costados. La cuenta conserva el perfil del usuario en Strapi.
 
-El menú de la cuenta incluye «Mis pedidos». Cada compra nueva conserva una copia de los productos, marcas, cantidades, precios y subtotales del momento de la compra, además de fecha, moneda, contacto, retiro o envío, dirección, método y estado del pago, estado del pedido, costo de envío, seguimiento y notas. Los pedidos anteriores muestran los datos disponibles; los campos que nunca se registraron se indican como tales.
-
-En Strapi, Content Manager → Compra permite actualizar Estado, Estado_pago, Costo_envio, Seguimiento y Notas. Los pedidos comienzan pendientes: no hay cobro automático ni pasarela de tarjetas. El envío se cotiza posteriormente; no se presenta como gratis. En modo de ventas reales, cancelar administrativamente un pedido requiere revisar y devolver su inventario manualmente.
-
-El servidor calcula los importes dentro de una transacción. Cada carrito sólo genera una compra. El acceso al historial queda limitado a su propietario y el formulario usa protección CSRF. Al reiniciar Strapi se agregan los campos y los permisos necesarios al rol Authenticated; no se habilita acceso público a los pedidos. Las bases y respaldos privados no se suben a GitHub.
-
-### Pedidos artificiales e inventario
-
-Por defecto `ORDERS_DEDUCT_STOCK=false`: generar pedidos no descuenta ni reserva stock y permite cantidades superiores al inventario (máximo 9999 por producto en un pedido). El stock cargado del catálogo permanece intacto. Los pedidos siguen guardando todos sus datos en el historial. No se restaura ni se importa inventario al confirmar pedidos.
-
-Para comenzar ventas reales, configurar `ORDERS_DEDUCT_STOCK=true` en `mi-proyecto-strapi/.env` y reiniciar Strapi. Sólo los pedidos nuevos comprobarán y descontarán stock; los pedidos artificiales anteriores no afectan el inventario retroactivamente.
+La tienda funciona como catálogo: no ofrece carrito, checkout ni historial de pedidos. Las consultas se realizan por WhatsApp. Los modelos históricos de compras se conservan para no eliminar datos existentes; sus rutas públicas están deshabilitadas.

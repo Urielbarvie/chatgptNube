@@ -110,19 +110,6 @@ require_once __DIR__ . '/_layouts/header.php';
 
                     <p class="text-secondary mb-4"><?= nl2br(htmlspecialchars($producto['descripcion'] ?? 'Sin descripción disponible.')) ?></p>
 
-                    <label for="qtyInput" class="form-label">Cantidad</label>
-                    <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
-                        <div class="input-group" style="max-width: 140px;">
-                            <button class="btn btn-premium-outline" type="button" id="qtyMinus">−</button>
-                            <input type="number" id="qtyInput" aria-label="Cantidad de unidades" class="form-control form-control-premium text-center" value="1" min="1" max="9999" <?= (int) $producto['stock'] <= 0 ? 'disabled' : '' ?>>
-                            <button class="btn btn-premium-outline" type="button" id="qtyPlus">+</button>
-                        </div>
-                        <button type="button" class="btn btn-premium-red product-add-button flex-grow-1 py-3"
-                                onclick="addToCart(<?= (int) $producto['id_producto'] ?>, document.getElementById('qtyInput').value, <?= htmlspecialchars(json_encode($producto['nombre'], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>)"
-                                <?= (int) $producto['stock'] <= 0 ? 'disabled' : '' ?>>
-                            <?= (int) $producto['stock'] <= 0 ? 'Sin stock' : 'Añadir al carrito' ?>
-                        </button>
-                    </div>
                     <div class="product-detail-help"><strong>¿Tenés dudas sobre este producto?</strong><p>Consultanos antes de comprar. Respondemos consultas en todo momento.</p><a href="https://wa.me/5491162982496?text=<?= rawurlencode('Hola MVB, quiero consultar por ' . $producto['nombre']) ?>" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp ↗</a></div>
                 </div>
             </div>
@@ -132,7 +119,7 @@ require_once __DIR__ . '/_layouts/header.php';
     </main>
 
     <script >
-        // Botones +/- de cantidad (respetando el stock disponible)
+        // Navegación de la galería del producto
         document.addEventListener('DOMContentLoaded', () => {
             const slides = Array.from(document.querySelectorAll('.mvb-gallery-slide'));
             const thumbnails = Array.from(document.querySelectorAll('[data-gallery-index]'));
@@ -147,23 +134,6 @@ require_once __DIR__ . '/_layouts/header.php';
             };
             document.querySelectorAll('[data-gallery-step]').forEach(button => button.addEventListener('click', () => showPhoto(selectedPhoto + Number(button.dataset.galleryStep))));
             thumbnails.forEach(button => button.addEventListener('click', () => showPhoto(Number(button.dataset.galleryIndex))));
-            const qtyInput = document.getElementById('qtyInput');
-            const qtyMinus = document.getElementById('qtyMinus');
-            const qtyPlus = document.getElementById('qtyPlus');
-            if (qtyInput && qtyMinus && qtyPlus) {
-                const normalizeQuantity = () => {
-                    qtyInput.value = Math.max(1, Math.min(parseInt(qtyInput.max, 10), parseInt(qtyInput.value, 10) || 1));
-                };
-                qtyInput.addEventListener('change', normalizeQuantity);
-                qtyMinus.disabled = qtyPlus.disabled = qtyInput.disabled;
-                qtyMinus.addEventListener('click', () => {
-                    qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1', 10) - 1);
-                });
-                qtyPlus.addEventListener('click', () => {
-                    const max = parseInt(qtyInput.max || '999', 10);
-                    qtyInput.value = Math.min(max, parseInt(qtyInput.value || '1', 10) + 1);
-                });
-            }
         });
     </script>
 
