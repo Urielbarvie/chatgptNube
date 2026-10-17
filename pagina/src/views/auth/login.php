@@ -11,7 +11,7 @@ unset($_SESSION['error_login']);
 
 <?php if ($error): ?>
     <div class="alert alert-danger py-2 small" role="alert">
-        Correo o contraseña incorrectos. Probá de nuevo.
+        <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
     </div>
 <?php endif; ?>
 

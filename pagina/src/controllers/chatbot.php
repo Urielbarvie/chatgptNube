@@ -49,17 +49,17 @@ try {
     }
     $mensaje = trim($mensaje);
     $texto = strtr(mb_strtolower($mensaje, 'UTF-8'), ['á'=>'a', 'é'=>'e', 'í'=>'i', 'ó'=>'o', 'ú'=>'u', 'ü'=>'u', '¿'=>'', '?'=>'']);
-    $respuesta = 'Todavía no tengo una respuesta para esa consulta. Puedo orientarte sobre catálogo, marcas y registro. Probá con alguno de esos temas.';
+    $respuesta = 'Todavía no tengo una respuesta para esa consulta. Puedo orientarte sobre catálogo, carrito, registro e historial. Probá con alguno de esos temas.';
     // Reglas del apunte, ampliadas con temas de la tienda. No se usa una API de IA.
     $reglas = [
         '/\b(historial|conversacion|privacidad)\b/u' => 'Los mensajes se guardan con fecha y hora. Mientras conserves esta sesión, podés volver a ver los últimos 100 mensajes. No compartas contraseñas ni datos de pago.',
         '/\b(stock|disponibilidad|precio|precios)\b/u' => 'Consultá el catálogo y la ficha del producto para ver la información publicada. Este chat no consulta precios ni stock en tiempo real.',
-        '/\b(comprar|compra)\b/u' => 'Consultá por WhatsApp al 11 6298-2496 para coordinar tu compra.',
+        '/\b(carrito|comprar|compra)\b/u' => 'Buscá un producto en el catálogo, abrí su ficha y usá la opción para agregarlo al carrito. Desde el carrito podés revisar tu selección antes de continuar.',
         '/\b(catalogo|productos|repuestos|ofertas)\b/u' => 'Podés explorar el catálogo desde el menú de la tienda. En el inicio también tenés nuevos ingresos, ofertas y filtros por precio.',
         '/\b(registro|registrar|registrarme|cuenta|sesion|login)\b/u' => 'Usá la opción de iniciar sesión de la tienda. Si todavía no tenés cuenta, elegí Registrarse y completá el formulario.',
         '/\b(envio|envios|pago|pagos|devolucion)\b/u' => 'No tengo información confirmada sobre envíos, medios de pago o devoluciones. Consultá esas condiciones con la tienda antes de comprar.',
         '/\b(como estas)\b/u' => '¡Muy bien! Estoy listo para ayudarte a recorrer Multiventas Barvie.',
-        '/\b(hola|buenas|buenos dias)\b/u' => '¡Hola! Soy el asistente de Multiventas Barvie. Puedo orientarte sobre catálogo, marcas y registro. ¿Qué necesitás?',
+        '/\b(hola|buenas|buenos dias)\b/u' => '¡Hola! Soy el asistente de Multiventas Barvie. Puedo orientarte sobre catálogo, carrito y registro. ¿Qué necesitás?',
         '/\b(gracias)\b/u' => '¡De nada! Si necesitás ayuda con otra parte de la tienda, escribime.',
         '/\b(chau|adios|hasta luego)\b/u' => '¡Hasta luego! Gracias por visitar Multiventas Barvie.',
     ];

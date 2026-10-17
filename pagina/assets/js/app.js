@@ -1,3 +1,79 @@
+// =============================================================================
+// FUNCIONES GLOBALES (accesibles desde los onclick="..." del HTML generado
+// por PHP). Tienen que vivir FUERA del DOMContentLoaded de abajo, porque el
+// HTML con onclick se ejecuta en el contexto global, no dentro de ese bloque.
+// =============================================================================
+let cartCount = 0;
+let cartButton = null;
+let toastContainer = null;
+
+function showToast(productName) {
+    if (!toastContainer) return;
+
+    const toast = document.createElement("div");
+    toast.className = "toast align-items-center text-white bg-dark border border-secondary border-opacity-50 show mb-2";
+    toast.setAttribute("role", "alert");
+    toast.setAttribute("aria-live", "assertive");
+    toast.setAttribute("aria-atomic", "true");
+
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong class="text-danger">✓</strong> Se agregó: <span class="fw-semibold">${productName}</span> al carrito.
+            </div>
+            <button type="button" class="btn-close btn-close-white m-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    `;
+    toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+/**
+ * Se llama desde onclick="addToCart(id, cantidad, nombre)" en las tarjetas
+ * de producto y en la vista de detalle.
+ * Guarda el producto en Strapi y recupera el contador real del carrito.
+ */
+async function addToCart(id, cantidad = 1, nombre = 'Producto') {
+    const idProducto = Number(id);
+    const unidades = Number(cantidad);
+    if (!Number.isSafeInteger(idProducto) || idProducto <= 0 || !Number.isSafeInteger(unidades) || unidades < 1 || unidades > 9999) {
+        alert('Revisá el producto y la cantidad.');
+        return;
+    }
+    const base = window.BASE_URL || '';
+    const endpoint = base + '/src/controllers/auth/carrito_controller.php';
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST', credentials: 'same-origin',
+            body: new URLSearchParams({id_producto: String(idProducto), cantidad: String(unidades)})
+        });
+        const data = await response.json();
+        if (response.status === 401) {
+            window.location.assign(base + '/src/views/auth/login.php');
+            return;
+        }
+        if (!response.ok || !data.success) throw new Error(data.message || 'No se pudo agregar el producto.');
+        const cartResponse = await fetch(endpoint, {credentials: 'same-origin', cache: 'no-store'});
+        const cart = await cartResponse.json();
+        if (cartResponse.ok && cart.success) {
+            cartCount = cart.productos.reduce((sum, item) => sum + Number(item.cantidad), 0);
+            if (cartButton) cartButton.textContent = 'Mi Carrito (' + cartCount + ')';
+        }
+        showToast(nombre);
+    } catch (error) {
+        console.error('Error al agregar al carrito:', error);
+        alert(error.message || 'No se pudo conectar con el carrito.');
+    }
+}
+
+/**
+ * Se llama desde onclick="openProductDetail(id)" en las tarjetas de producto.
+ * Navega a la página de detalle real (src/views/productos.php?id=...).
+ */
 function openProductDetail(id) {
     const base = window.BASE_URL || '';
     window.location.href = `${base}/src/views/detalles_producto.php?id=${id}`;
@@ -16,6 +92,22 @@ document.addEventListener("DOMContentLoaded", () => {
             wrap: true
         });
     }
+
+    // =========================================================================
+    // 2. SISTEMA DE CARRITO DE COMPRAS CON TOASTS FLOTANTES
+    // =========================================================================
+    // cartButton y toastContainer son variables globales (declaradas arriba,
+    // fuera de este bloque) para que addToCart() pueda usarlas desde los
+    // onclick="..." del HTML. Acá solo las inicializamos con el DOM ya listo.
+    cartButton = document.getElementById("cartBtn");
+
+    toastContainer = document.createElement("div");
+    toastContainer.style.position = "fixed";
+    toastContainer.style.bottom = "20px";
+    toastContainer.style.right = "20px";
+    toastContainer.style.zIndex = "1050";
+    document.body.appendChild(toastContainer);
+
     // NOTA: el filtro de categorías del dropdown del navbar ahora navega de
     // verdad a catalogo.php?categoria=ID (ver header.php), así que ya no hace
     // falta este bloque de filtrado por JavaScript que había antes acá.

@@ -1,4 +1,9 @@
 'use strict';
 
-// Modelo histórico conservado; no se exponen operaciones de compra.
-module.exports = { routes: [] };
+/**
+ * carrito router
+ */
+
+const { createCoreRouter } = require('@strapi/strapi').factories;
+
+module.exports = createCoreRouter('api::carrito.carrito');

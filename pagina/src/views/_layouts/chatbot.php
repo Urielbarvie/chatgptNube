@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../config/rutas.php';
         <p class="mv-chat-notice">Asistente con respuestas programadas. Guardamos tu conversación. No compartas datos sensibles.</p>
         <div class="mv-chat-log" role="log" aria-live="polite" aria-label="Mensajes"></div>
         <div class="mv-chat-topics" aria-label="Consultas sugeridas">
-            <button type="button">Catálogo</button><button type="button">Marcas</button><button type="button">Registro</button>
+            <button type="button">Catálogo</button><button type="button">Carrito</button><button type="button">Registro</button>
         </div>
         <p class="mv-chat-status" role="status"></p>
         <form class="mv-chat-form">

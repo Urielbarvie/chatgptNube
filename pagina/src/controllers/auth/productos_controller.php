@@ -118,6 +118,54 @@ function obtenerProductosNuevos(int $limite = 4): array
     return array_map('mapearProducto', $items);
 }
 
+/**
+ * SUPUESTO A CONFIRMAR: content-type 'detalle-compra' (endpoint 'detalle-compras')
+ * con campo 'Cantidad' — confirmado por el schema.json que pasaste. La
+ * agregación (SUM por producto) se hace acá en PHP porque la API REST de
+ * Strapi no hace GROUP BY. Si el catálogo de compras crece mucho, conviene
+ * un endpoint custom en Strapi que agregue en la base de datos.
+ */
+function obtenerProductoMasVendido(): array
+{
+    $resultado = strapiRequest('GET', 'detalle-compras', [
+        'populate'   => ['producto' => ['populate' => ['categoria', 'Imagen']]],
+        'pagination' => ['limit' => 1000],
+    ]);
+
+    $items = $resultado['data']['data'] ?? [];
+    if (empty($items)) {
+        return [];
+    }
+
+    $totales = [];
+    foreach ($items as $detalle) {
+        $producto = $detalle['producto'] ?? null;
+        if (!$producto) {
+            continue;
+        }
+        $cantidad = $detalle['Cantidad'] ?? 0;
+        $idProd   = $producto['id'];
+
+        if (!isset($totales[$idProd])) {
+            $totales[$idProd] = ['producto' => $producto, 'total' => 0];
+        }
+        $totales[$idProd]['total'] += (int) $cantidad;
+    }
+
+    if (empty($totales)) {
+        return [];
+    }
+
+    usort($totales, fn($a, $b) => $b['total'] <=> $a['total']);
+    $ganador = $totales[0];
+
+    $productoMapeado = mapearProducto($ganador['producto']);
+    $productoMapeado['total_vendido'] = $ganador['total'];
+
+    // Envuelto en array porque index.php espera una LISTA para hacer foreach().
+    return [$productoMapeado];
+}
+
 function obtenerProductosOferta(int $limite = 4): array
 {
     $resultado = strapiRequest('GET', 'productos', [

@@ -2,7 +2,8 @@
 // =============================================================================
 // CLIENTE HTTP COMPARTIDO PARA HABLAR CON LA API REST DE STRAPI
 // =============================================================================
-// Lo usan los controladores de productos, acceso y perfil. Centralizarlo acá evita
+// Lo usan productos_controller.php, login.php, register.php, carrito.php,
+// carrito_controller.php y checkout_controller.php. Centralizarlo acá evita
 // tener 6 copias del mismo curl_init() repartidas por el proyecto.
 
 require_once __DIR__ . '/database.php';
@@ -15,7 +16,7 @@ if (!defined('STRAPI_URL')) {
  * Hace una request HTTP a /api/{endpoint} de Strapi.
  *
  * @param string      $method   'GET' | 'POST' | 'PUT' | 'DELETE'
- * @param string      $endpoint p.ej. 'productos', 'auth/local', 'productos/5'
+ * @param string      $endpoint p.ej. 'productos', 'auth/local', 'carritos/5'
  * @param array       $query    query params (filters, populate, pagination, sort...)
  * @param array|null  $body     cuerpo a mandar como JSON (para auth/local, o { data: {...} })
  * @param string|null $token    JWT del usuario logueado, si la ruta lo necesita
@@ -63,6 +64,12 @@ function strapiRequest(string $method, string $endpoint, array $query = [], ?arr
 
     $decoded = json_decode($response, true);
 
+    // Una sesión PHP puede seguir abierta cuando Strapi ya rechazó su JWT.
+    if ($httpCode === 401 && $token !== null &&
+        $token === ($_SESSION['usuario']['jwt'] ?? null)) {
+        unset($_SESSION['usuario'], $_SESSION['usuario_id'], $_SESSION['nombre'], $_SESSION['nombre_usuario'], $_SESSION['perfil_csrf'], $_SESSION['checkout_csrf']);
+        $_SESSION['error_login'] = 'Tu sesión venció. Iniciá sesión nuevamente para usar el carrito.';
+    }
     if ($httpCode < 200 || $httpCode >= 300) {
         $mensajeError = $decoded['error']['message'] ?? "Error HTTP $httpCode";
         error_log("strapiRequest: Strapi devolvió HTTP $httpCode para $method $endpoint ");
