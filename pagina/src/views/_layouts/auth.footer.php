@@ -1,6 +1,5 @@
                 </div>
                 <!-- /Panel del formulario -->
-                <aside class="auth-side auth-brand-side" aria-label="Más marcas de MVB"><?php renderMarcasCuenta(array_slice($seleccionMarcas,3,3)); ?></aside>
 
             </div>
         </div>
@@ -12,6 +11,5 @@
 <?php require_once __DIR__ . '/chatbot.php'; ?>
 <script>window.BASE_URL = <?= json_encode(BASE_URL) ?>;</script>
 <script src="<?= BASE_URL ?>/assets/js/app.js" defer></script>
-<script src="<?= BASE_URL ?>/assets/js/account.js?v=<?= filemtime(__DIR__ . '/../../../assets/js/account.js') ?>" defer></script>
 </body>
 </html>
